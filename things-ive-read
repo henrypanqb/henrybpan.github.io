@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Things I've Read - Henry B. Pan</title>
+  <style>
+    body {
+      font-family: "Times New Roman", Times, serif;
+      background: #fdfdfd;
+      color: #708090;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+    nav { margin-bottom: 1.5rem; }
+    a.button {
+      display: inline-block;
+      margin: 0.25rem 0.75rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid #708090;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #708090;
+      font-size: 0.9rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    a.button:hover { background: #708090; color: #fdfdfd; }
+    ul.read-list { list-style: none; padding: 0; margin-top: 1rem; }
+    ul.read-list li { margin: 0.5rem 0; }
+    ul.read-list li a {
+      color: #708090; text-decoration: none; font-size: 1rem;
+    }
+    ul.read-list li a:hover { text-decoration: underline; color: #505a66; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="button">Return to Home</a>
+    <a href="about.html" class="button">About Me</a>
+    <a href="essays.html" class="button">Essays</a>
+  </nav>
+
+  <h1>Things I've Read</h1>
+
+  <ul class="read-list">
+    <li><a href="https://www.example.com/book1" target="_blank" rel="noopener noreferrer">Book Title 1</a></li>
+    <li><a href="https://www.example.com/article2" target="_blank" rel="noopener noreferrer">Article Title 2</a></li>
+    <li><a href="https://www.example.com/book3" target="_blank" rel="noopener noreferrer">Book Title 3</a></li>
+  </ul>
+
+  <script>
+    document.getElementsByTagName("h1")[0].style.fontSize = "3vw";
+  </script>
+</body>
+</html>
