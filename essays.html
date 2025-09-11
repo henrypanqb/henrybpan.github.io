@@ -11,73 +11,88 @@
       color: #708090;
       margin: 0;
       padding: 2rem;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
       text-align: center;
     }
-    h1 {
-      font-size: 0.8rem; /* smaller header */
-      margin-bottom: 1rem;
-    }
+
+    /* Internal navigation links as simple text links */
     nav {
       margin-bottom: 1.5rem;
     }
-    a.button {
-      display: inline-block;
-      margin: 0.25rem 0.75rem;
-      padding: 0.5rem 1rem;
-      border: 1px solid #708090;
-      border-radius: 4px;
+    nav a {
+      margin: 0 1rem;
       text-decoration: none;
       color: #708090;
-      font-size: 0.9rem;
-      transition: background 0.2s, color 0.2s;
-    }
-    a.button:hover {
-      background: #708090;
-      color: #fdfdfd;
-    }
-    ul.essay-list {
-      list-style-type: none;
-      padding: 0;
-      margin-top: 1rem;
-    }
-    ul.essay-list li {
-      margin: 0.5rem 0;
-    }
-    ul.essay-list li a {
-      color: #708090;
-      text-decoration: none;
       font-size: 1rem;
       transition: color 0.2s;
     }
-    ul.essay-list li a:hover {
+    nav a:hover {
       text-decoration: underline;
       color: #505a66;
+    }
+
+    ul.essay-list { 
+      list-style: none; 
+      padding: 0; 
+      margin-top: 1rem; 
+    }
+    ul.essay-list li { 
+      margin: 0.5rem 0; 
+    }
+    ul.essay-list li a {
+      color: #708090; 
+      text-decoration: none; 
+      font-size: 1rem;
+    }
+    ul.essay-list li a:hover { 
+      text-decoration: underline; 
+      color: #505a66; 
+    }
+
+    .subheader {
+      font-size: 0.8rem;
+      margin: 0.05rem 0 1rem 0; /* closer to header */
+      color: #505a66;
+    }
+    .subheader a {
+      color: #708090;
+      text-decoration: none;
+    }
+    .subheader a:hover {
+      text-decoration: underline;
+    }
+
+    hr {
+      border: none;
+      height: 1px;
+      background-color: #dcdcdc;
+      margin: 1rem auto; /* centers horizontally with spacing */
+      width: 40%;
     }
   </style>
 </head>
 <body>
-  <div>
-    <!-- Navigation buttons -->
-    <nav>
-      <a href="index.html" class="button">Return to Home</a>
-      <a href="about.html" class="button">About Me</a>
-      <a href="things-ive-read.html" class="button">Things I've Read</a>
-    </nav>
+  <nav>
+    <a href="index.html">Return to Home</a>
+    <a href="about.html">About Me</a>
+    <a href="things-ive-read.html">Things I've Read</a>
+  </nav>
 
-    <!-- Page header -->
-    <h1>Essays</h1>
-
-    <!-- List of essays -->
-    <ul class="essay-list">
-      <li><a href="essays/essay1.html">Essay Title 1</a></li>
-      <li><a href="essays/essay2.html">Essay Title 2</a></li>
-      <li><a href="essays/essay3.html">Essay Title 3</a></li>
-      <!-- Add more essays here -->
-    </ul>
+  <h1>Essays</h1>
+  <div class="subheader">
+    This is a curated selection of my essays. If you want a complete collection, check out my
+    <a href="https://henrybpan.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a>.
   </div>
+
+  <hr>
+
+  <ul class="essay-list">
+    <li><a href="essays/essay1.html">Essay Title 1</a></li>
+    <li><a href="essays/essay2.html">Essay Title 2</a></li>
+    <li><a href="essays/essay3.html">Essay Title 3</a></li>
+  </ul>
+
+  <script>
+    document.getElementsByTagName("h1")[0].style.fontSize = "3vw";
+  </script>
 </body>
 </html>
