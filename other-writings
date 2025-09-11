@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Other Writings - Henry B. Pan</title>
+  <style>
+    body {
+      font-family: "Times New Roman", Times, serif;
+      background: #fdfdfd;
+      color: #708090;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+    nav { margin-bottom: 1.5rem; }
+    nav a {
+      margin: 0 0.75rem;
+      text-decoration: none;
+      color: #708090;
+      font-size: 0.95rem;
+    }
+    nav a:hover { text-decoration: underline; }
+    ul.writing-list { list-style: none; padding: 0; margin-top: 1rem; }
+    ul.writing-list li { margin: 0.5rem 0; }
+    ul.writing-list li a {
+      color: #708090; text-decoration: none; font-size: 1rem;
+    }
+    ul.writing-list li a:hover { text-decoration: underline; color: #505a66; }
+    .subheader {
+      font-size: 0.8rem;
+      margin: 0.2rem 0 0.8rem 0; /* closer to header */
+      color: #505a66;
+    }
+    hr {
+      border: none;
+      height: 1px;
+      background-color: #dcdcdc;
+      margin: 0.8rem auto; /* centered separator */
+      width: 40%;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Return to Home</a>
+    <a href="about.html">About Me</a>
+    <a href="essays.html">Essays</a>
+    <a href="things-ive-read.html">Things I've Read</a>
+  </nav>
+
+  <h1>Other Writings</h1>
+  <div class="subheader">
+    A collection of short stories, reflections, and works that don’t quite fit under “Essays.”
+  </div>
+  <hr>
+
+  <ul class="writing-list">
+    <li><a href="writings/story1.html">Story Title 1</a></li>
+    <li><a href="writings/reflection1.html">Reflection Title 1</a></li>
+    <li><a href="writings/other1.html">Other Writing Title 1</a></li>
+  </ul>
+
+  <script>
+    document.getElementsByTagName("h1")[0].style.fontSize = "3vw";
+  </script>
+</body>
+</html>
