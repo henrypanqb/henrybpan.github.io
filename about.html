@@ -5,40 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Me - Henry B. Pan</title>
   <style>
-    body { 
-      font-family: "Times New Roman", Times, serif; 
-      background: #fdfdfd; 
-      color: #708090; 
-      margin: 0; 
-      padding: 2rem; 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+    body {
+      font-family: "Times New Roman", Times, serif;
+      background: #fdfdfd;
+      color: #708090;
+      margin: 0;
+      padding: 2rem;
       text-align: center;
-      flex-direction: column;
     }
-    h1 { 
-      font-size: 0.8rem; /* 60% smaller than homepage (adjust as needed) */
-      margin-bottom: 1rem;
+    p { max-width: 600px; margin: 1rem auto; }
+    a.button {
+      display: inline-block;
+      margin: 0.25rem 0.75rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid #708090;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #708090;
+      font-size: 0.9rem;
+      transition: background 0.2s, color 0.2s;
     }
-    a { 
-      color: #708090; 
-      text-decoration: none; 
-      margin-bottom: 1rem;
-    }
-    a:hover { 
-      text-decoration: underline; 
-    }
-    p {
-      font-size: 1rem;
-      max-width: 600px;
-    }
+    a.button:hover { background: #708090; color: #fdfdfd; }
+    nav { margin-bottom: 1rem; }
   </style>
 </head>
 <body>
-  <a href="index.html">← Home</a>
+  <nav>
+    <a href="index.html" class="button">Return to Home</a>
+    <a href="essays.html" class="button">Essays</a>
+    <a href="things-ive-read.html" class="button">Things I've Read</a>
+  </nav>
+
   <h1>About Me</h1>
-  <p>This is where you can write a short bio about yourself.</p>
+  <p>Christ is king.</p>
+
+  <script>
+    document.getElementsByTagName("h1")[0].style.fontSize = "3vw";
+  </script>
 </body>
 </html>
