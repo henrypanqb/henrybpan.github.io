@@ -7,14 +7,14 @@
   <style>
     body {
       font-family: "Times New Roman", Times, serif;
-      background: #fdfdfd; /* softer than pure white */
-      color: #708090; /* slate gray */
+      background: #fdfdfd;
+      color: #708090;
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
     }
     main {
       text-align: center;
@@ -22,38 +22,96 @@
       padding: 2rem;
     }
     h1 {
-      font-size: 2.5rem;
+      font-size: 2rem; /* slightly smaller */
       margin-bottom: 0.5rem;
-    }
-    p {
-      font-size: 1.2rem;
-      color: #708090;
     }
     a {
       color: #708090;
       text-decoration: none;
+      position: relative;
     }
-    a:hover {
-      text-decoration: underline;
+    /* Social link underline animation */
+    nav.social a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      display: block;
+      margin-top: 2px;
+      right: 0;
+      background: #708090;
+      transition: width 0.3s ease;
+    }
+    nav.social a:hover::after {
+      width: 100%;
+      left: 0;
+      background: #708090;
+    }
+    /* Internal link underline animation (lighter) */
+    nav.internal-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      display: block;
+      margin-top: 2px;
+      right: 0;
+      background: #a0a0a0;
+      transition: width 0.3s ease;
+    }
+    nav.internal-links a:hover::after {
+      width: 100%;
+      left: 0;
+      background: #a0a0a0;
     }
     nav {
-      margin-top: 1.5rem;
+      margin-top: 1rem;
     }
     nav a {
       margin: 0 0.75rem;
       font-size: 1rem;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    /* Internal links stacked and spaced tighter */
+    .internal-links {
+      margin-top: 1rem; /* reduced spacing from social links */
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem; /* spacing between internal links */
+      align-items: center;
+    }
+    .separator {
+      height: 1px;
+      width: 40%;
+      background-color: #dcdcdc;
+      margin: 0.75rem auto; /* line break between social & internal */
     }
   </style>
 </head>
 <body>
   <main>
     <h1>Henry B. Pan</h1>
-    <p>Welcome to my little corner of the internet.</p>
-    <nav>
-      <a href="https://github.com/henrybpan">GitHub</a>
+    
+    <!-- External / social links -->
+    <nav class="social">
+      <a href="https://www.instagram.com/henrybpan/">Instagram</a>
+      <a href="https://www.tiktok.com/@henrybpan">TikTok</a>
+      <a href="https://x.com/henrypanonx">X</a>
       <a href="https://www.linkedin.com/in/henrybpan">LinkedIn</a>
       <a href="mailto:henrypaninquiries@gmail.com">Email</a>
     </nav>
+
+    <!-- Line separator -->
+    <div class="separator"></div>
+
+    <!-- Internal site links stacked vertically -->
+    <nav class="internal-links">
+      <a href="about.html">About Me</a>
+      <a href="essays.html">Essays</a>
+      <a href="things-ive-read.html">Things I've Read</a>
+    </nav>
+    
   </main>
 </body>
 </html>
