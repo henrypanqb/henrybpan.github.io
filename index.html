@@ -10,58 +10,53 @@
       background: #fdfdfd;
       color: #708090;
       margin: 0;
-      padding: 2rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      padding: 1rem 2rem 2rem 2rem; /* less space at the top */
       text-align: center;
-      flex-direction: column;
     }
     h1 {
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
-    a {
-      color: #708090;
-      text-decoration: none;
+    .links {
+      margin-top: 1.2rem;
+    }
+    .links a {
       margin: 0 0.75rem;
+      text-decoration: none;
+      color: #708090;
+      font-size: 1rem;
     }
-    a:hover {
-      text-decoration: underline;
-    }
+    .links a:hover { text-decoration: underline; }
     .internal-links {
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      align-items: center;
+      margin-top: 0.8rem; /* decreased whitespace */
     }
-    .separator {
-      height: 1px;
-      width: 40%;
-      background-color: #dcdcdc;
-      margin: 0.75rem auto;
+    .internal-links a {
+      display: block;
+      margin: 0.2rem 0;
+      text-decoration: underline;
+      color: #708090;
+      font-size: 0.6rem; /* smaller headers for internal links */
     }
+    .internal-links a:hover { color: #505a66; }
   </style>
 </head>
 <body>
   <h1>Henry B. Pan</h1>
 
-  <nav class="social">
+  <div class="links">
     <a href="https://www.instagram.com/henrybpan/">Instagram</a>
-    <a href="https://www.tiktok.com/@henrybpan">TikTok</a>
+    <a href="https://www.tiktok.com/@henrybpan">Tiktok</a>
     <a href="https://x.com/henrypanonx">X</a>
     <a href="https://www.linkedin.com/in/henrybpan">LinkedIn</a>
     <a href="mailto:henrypaninquiries@gmail.com">Email</a>
-  </nav>
+  </div>
 
-  <div class="separator"></div>
-
-  <nav class="internal-links">
+  <div class="internal-links">
+    <hr style="width:40%; margin:0.8rem auto; border:none; height:1px; background:#dcdcdc;">
     <a href="about.html">About Me</a>
     <a href="essays.html">Essays</a>
     <a href="things-ive-read.html">Things I've Read</a>
-  </nav>
+    <a href="other-writings.html">Other Writings</a>
+  </div>
 
   <script>
     document.getElementsByTagName("h1")[0].style.fontSize = "3vw";
