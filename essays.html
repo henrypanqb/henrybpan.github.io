@@ -10,62 +10,33 @@
       background: #fdfdfd;
       color: #708090;
       margin: 0;
-      padding: 2rem;
+      padding: 1rem 2rem 2rem 2rem; /* less top padding */
       text-align: center;
     }
-
-    /* Internal navigation links as simple text links */
-    nav {
-      margin-bottom: 1.5rem;
-    }
+    nav { margin-bottom: 1.5rem; }
     nav a {
-      margin: 0 1rem;
+      margin: 0 0.75rem;
       text-decoration: none;
       color: #708090;
-      font-size: 1rem;
-      transition: color 0.2s;
+      font-size: 0.95rem;
     }
-    nav a:hover {
-      text-decoration: underline;
-      color: #505a66;
-    }
-
-    ul.essay-list { 
-      list-style: none; 
-      padding: 0; 
-      margin-top: 1rem; 
-    }
-    ul.essay-list li { 
-      margin: 0.5rem 0; 
-    }
+    nav a:hover { text-decoration: underline; }
+    ul.essay-list { list-style: none; padding: 0; margin-top: 1rem; }
+    ul.essay-list li { margin: 0.5rem 0; }
     ul.essay-list li a {
-      color: #708090; 
-      text-decoration: none; 
-      font-size: 1rem;
+      color: #708090; text-decoration: none; font-size: 1rem;
     }
-    ul.essay-list li a:hover { 
-      text-decoration: underline; 
-      color: #505a66; 
-    }
-
+    ul.essay-list li a:hover { text-decoration: underline; color: #505a66; }
     .subheader {
       font-size: 0.8rem;
-      margin: 0.05rem 0 1rem 0; /* closer to header */
+      margin: 0.2rem 0 0.8rem 0; /* closer to header */
       color: #505a66;
     }
-    .subheader a {
-      color: #708090;
-      text-decoration: none;
-    }
-    .subheader a:hover {
-      text-decoration: underline;
-    }
-
     hr {
       border: none;
       height: 1px;
       background-color: #dcdcdc;
-      margin: 1rem auto; /* centers horizontally with spacing */
+      margin: 0.8rem auto;
       width: 40%;
     }
   </style>
@@ -74,7 +45,9 @@
   <nav>
     <a href="index.html">Return to Home</a>
     <a href="about.html">About Me</a>
+    <a href="essays.html">Essays</a>
     <a href="things-ive-read.html">Things I've Read</a>
+    <a href="other-writings.html">Other Writings</a>
   </nav>
 
   <h1>Essays</h1>
@@ -82,7 +55,6 @@
     This is a curated selection of my essays. If you want a complete collection, check out my
     <a href="https://henrybpan.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a>.
   </div>
-
   <hr>
 
   <ul class="essay-list">
