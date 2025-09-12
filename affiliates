@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Affiliates - Henry B. Pan</title>
+  <style>
+    body {
+      font-family: "Times New Roman", Times, serif;
+      background: #fdfdfd;
+      color: #708090;
+      margin: 0;
+      padding: 1rem 2rem 2rem 2rem;
+      text-align: center;
+    }
+    nav { margin-bottom: 1.5rem; }
+    nav a {
+      margin: 0 0.75rem;
+      text-decoration: none;
+      color: #708090;
+      font-size: 0.95rem;
+    }
+    nav a:hover { text-decoration: underline; }
+    h2 { margin-top: 1.5rem; color: #505a66; }
+    p.description {
+      max-width: 700px;
+      margin: 0.5rem auto 1rem auto;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .general-subheader {
+      font-size: 0.8rem;
+      margin: 0.2rem 0 0.8rem 0;
+      color: #505a66;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Return to Home</a>
+    <a href="about.html">About Me</a>
+    <a href="essays.html">Essays</a>
+    <a href="things-ive-read.html">Things I've Read</a>
+    <a href="other-writings.html">Other Writings</a>
+
+  <h1>Affiliates</h1>
+  <div class="general-subheader">
+    Below is a collection of my affiliate connections and partners, with descriptions for each.
+  </div>
+  <hr style="width:40%; margin:0.8rem auto; border:none; height:1px; background:#dcdcdc;">
+
+  <!-- Example Affiliate 1 -->
+  <h2>Affiliate Name 1</h2>
+  <p class="description">
+    [Insert description of Affiliate 1 here. This could include what they do, why you’re affiliated, or any other info.]
+  </p>
+
+  <!-- Example Affiliate 2 -->
+  <h2>Affiliate Name 2</h2>
+  <p class="description">
+    [Insert description of Affiliate 2 here.]
+  </p>
+
+  <!-- Example Affiliate 3 -->
+  <h2>Affiliate Name 3</h2>
+  <p class="description">
+    [Insert description of Affiliate 3 here.]
+  </p>
+
+  <script>
+    document.getElementsByTagName("h1")[0].style.fontSize = "3vw";
+  </script>
+</body>
+</html>
