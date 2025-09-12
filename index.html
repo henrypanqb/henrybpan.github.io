@@ -10,12 +10,15 @@
       background: #fdfdfd;
       color: #708090;
       margin: 0;
-      padding: 1rem 2rem 2rem 2rem; /* less space at the top */
+      padding: 1rem 2rem 2rem 2rem; /* reduced top padding */
       text-align: center;
     }
+
     h1 {
       margin-bottom: 0.5rem;
     }
+
+    /* Social links + affiliates */
     .links {
       margin-top: 1.2rem;
     }
@@ -26,32 +29,46 @@
       font-size: 1rem;
     }
     .links a:hover { text-decoration: underline; }
+
+    /* Internal navigation links */
     .internal-links {
-      margin-top: 0.8rem; /* decreased whitespace */
+      margin-top: 0.8rem; /* slightly decreased spacing */
     }
     .internal-links a {
       display: block;
-      margin: 0.2rem 0;
+      margin: 0.3rem 0;
       text-decoration: underline;
       color: #708090;
-      font-size: 0.6rem; /* smaller headers for internal links */
+      font-size: 1rem; /* increased font size */
     }
     .internal-links a:hover { color: #505a66; }
+
+    /* Separator line */
+    hr {
+      border: none;
+      height: 1px;
+      background-color: #dcdcdc;
+      width: 40%;
+      margin: 0.8rem auto;
+    }
   </style>
 </head>
 <body>
   <h1>Henry B. Pan</h1>
 
+  <!-- Social Links + Affiliates -->
   <div class="links">
     <a href="https://www.instagram.com/henrybpan/">Instagram</a>
     <a href="https://www.tiktok.com/@henrybpan">Tiktok</a>
     <a href="https://x.com/henrypanonx">X</a>
     <a href="https://www.linkedin.com/in/henrybpan">LinkedIn</a>
     <a href="mailto:henrypaninquiries@gmail.com">Email</a>
+    <a href="affiliates.html">Affiliates</a> <!-- moved into social links -->
   </div>
 
+  <!-- Internal Navigation Links -->
   <div class="internal-links">
-    <hr style="width:40%; margin:0.8rem auto; border:none; height:1px; background:#dcdcdc;">
+    <hr>
     <a href="about.html">About Me</a>
     <a href="essays.html">Essays</a>
     <a href="things-ive-read.html">Things I've Read</a>
