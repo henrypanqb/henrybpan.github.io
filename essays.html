@@ -10,60 +10,134 @@
       background: #fdfdfd;
       color: #708090;
       margin: 0;
-      padding: 1rem 2rem 2rem 2rem; /* less top padding */
-      text-align: center;
+      padding: 1rem 2rem 2rem 144px; /* 1.5 inches = 144px, matching index */
+      text-align: left;
+      max-width: 800px; /* limit max width for better readability */
     }
-    nav { margin-bottom: 1.5rem; }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem 1rem 2rem 2rem; /* reduced left padding on mobile */
+        max-width: none;
+      }
+      
+      h1 {
+        font-size: 2rem; /* smaller heading on mobile */
+      }
+      
+      nav a {
+        margin: 0 0.8rem 0.3rem 0;
+        display: inline-block;
+      }
+    }
+
+    /* Very small screens */
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem 0.5rem 2rem 1rem;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      nav a {
+        font-size: 0.9rem;
+      }
+    }
+
+    h1 {
+      margin-bottom: 0.5rem;
+      font-size: 3rem; /* fixed font size instead of viewport-based */
+    }
+
+    /* Navigation links */
+    nav {
+      margin-bottom: 1rem;
+    }
     nav a {
-      margin: 0 0.75rem;
-      text-decoration: none;
+      display: inline-block;
+      margin: 0 1rem 0 0; /* horizontal spacing like index page */
+      text-decoration: underline;
       color: #708090;
-      font-size: 0.95rem;
+      font-size: 1rem;
     }
-    nav a:hover { text-decoration: underline; }
-    ul.essay-list { list-style: none; padding: 0; margin-top: 1rem; }
-    ul.essay-list li { margin: 0.5rem 0; }
-    ul.essay-list li a {
-      color: #708090; text-decoration: none; font-size: 1rem;
-    }
-    ul.essay-list li a:hover { text-decoration: underline; color: #505a66; }
+    nav a:hover { color: #505a66; }
+
     .subheader {
       font-size: 1rem;
-      margin: 0.2rem 0 0.8rem 0; /* closer to header */
+      margin: 1.5rem 0;
+      color: #708090;
+      line-height: 1.4;
+    }
+    
+    .subheader a {
+      color: #708090;
+      text-decoration: underline;
+    }
+    
+    .subheader a:hover {
       color: #505a66;
     }
+
+    ul.essay-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+    }
+    
+    ul.essay-list li {
+      margin: 0.5rem 0;
+    }
+    
+    ul.essay-list li a {
+      color: #708090;
+      text-decoration: underline;
+      font-size: 1rem;
+    }
+    
+    ul.essay-list li a:hover {
+      text-decoration: underline;
+      color: #505a66;
+    }
+
+    /* Separator line */
     hr {
       border: none;
       height: 1px;
       background-color: #dcdcdc;
-      margin: 0.8rem auto;
       width: 40%;
+      margin: 0.8rem 0; /* left aligned like index */
     }
   </style>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Return to Home</a>
-    <a href="about.html">About Me</a>
-    <a href="things-ive-read.html">Things I've Read</a>
-    <a href="other-writings.html">Other Writings</a>
-  </nav>
-
   <h1>Essays</h1>
+
+  <!-- Navigation Links -->
+  <div>
+    <nav>
+      <a href="index.html">Return to Home</a>
+      <a href="affiliates.html">Affiliates</a>
+      <a href="things-ive-read.html">Things I've Read</a>
+      <a href="other-writings.html">Other Writings</a>
+    </nav>
+  </div>
+
+  <!-- Description Section -->
+  <hr>
   <div class="subheader">
     This is a curated selection of my essays. If you want a complete collection, check out my
     <a href="https://henrybpan.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a>.
   </div>
   <hr>
 
+  <!-- Essay List -->
   <ul class="essay-list">
     <li><a href="essays/essay1.html">Essay Title 1</a></li>
     <li><a href="essays/essay2.html">Essay Title 2</a></li>
     <li><a href="essays/essay3.html">Essay Title 3</a></li>
   </ul>
-
-  <script>
-    document.getElementsByTagName("h1")[0].style.fontSize = "3vw";
-  </script>
 </body>
 </html>
