@@ -10,8 +10,58 @@
       background: #fdfdfd;
       color: #708090;
       margin: 0;
-      padding: 1rem 2rem 2rem 2rem;
-      text-align: left; /* changed from center to left */
+      padding: 1rem 2rem 2rem 144px; /* 1.5 inches = 144px */
+      text-align: left;
+      max-width: 800px; /* limit max width for better readability */
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem 1rem 2rem 2rem; /* reduced left padding on mobile */
+        max-width: none;
+      }
+      
+      h1 {
+        font-size: 2rem; /* smaller heading on mobile */
+      }
+      
+      .links {
+        margin-top: 1rem;
+      }
+      
+      .links a {
+        margin: 0 0.8rem 0.5rem 0; /* add bottom margin for better spacing */
+        display: inline-flex;
+      }
+      
+      .internal-links a {
+        margin: 0 0.8rem 0.3rem 0;
+        display: inline-block;
+      }
+      
+      hr {
+        width: 60%; /* wider separator on mobile */
+      }
+    }
+
+    /* Very small screens */
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem 0.5rem 2rem 1rem;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .links a, .internal-links a {
+        font-size: 0.9rem;
+      }
+      
+      hr {
+        width: 80%;
+      }
     }
 
     h1 {
