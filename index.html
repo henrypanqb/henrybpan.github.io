@@ -102,6 +102,15 @@
       font-size: 1rem;
       line-height: 1.4;
     }
+    
+    .affiliates a {
+      color: #708090;
+      text-decoration: underline;
+    }
+    
+    .affiliates a:hover {
+      color: #505a66;
+    }
 
     /* Internal navigation links */
     .internal-links {
@@ -167,17 +176,36 @@
   <hr>
   <div class="affiliates">
     <p>I am a Christian.<br>
-    I am a student at UVA.<br>
-    I am 18.<br>
-    I make videos.</p>
+    I am <span id="age">18</span>.<br>
+    I make videos.<br>
+    I am founding <a href="https://www.instagram.com/hoosincontent/" target="_blank">UVA's first space for content creators</a>.</p>
   </div>
   <hr>
 
   <!-- Internal Navigation Links -->
   <div class="internal-links">
+    <a href="affiliates.html">Affiliates</a>
     <a href="essays.html">Essays</a>
     <a href="things-ive-read.html">Things I've Read</a>
     <a href="other-writings.html">Other Writings</a>
   </div>
-</body>
-</html>
+
+  <script>
+    // Calculate age based on birthday (February 26, 2007)
+    function calculateAge() {
+      const birthDate = new Date(2007, 1, 26); // Month is 0-indexed (1 = February)
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      
+      // If birthday hasn't occurred this year yet, subtract 1
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      
+      return age;
+    }
+    
+    // Update age on page load
+    document.getElementById('age').textContent = calculateAge();
+  </script>
