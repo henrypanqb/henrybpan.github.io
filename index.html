@@ -87,32 +87,7 @@
       margin: 1.3rem auto 0;
       padding: 0 clamp(0.5rem, 2vw, 1.2rem);
     }
-    .video-frame {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border: 0.5px solid var(--ink);
-      background: var(--paper);
-    }
-    .video-frame iframe { width: 100%; height: 100%; display: block; border: 0; }
-    .video-caption {
-      text-align: center;
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 0.95rem;
-      color: var(--ink-mut);
-      margin-top: 0.85rem;
-    }
-    .video-caption a {
-      color: var(--ink-mut);
-      text-decoration: underline;
-      text-decoration-color: var(--rule);
-      text-decoration-thickness: 0.5px;
-      text-underline-offset: 4px;
-    }
-    .video-caption a:hover { color: var(--ember); }
-
-    /* Reading & writing: shared list styling, no thumbnails */
+/* Reading & writing: shared list styling, no thumbnails */
     .list-block {
       max-width: 640px;
       margin: 0 auto;
@@ -188,6 +163,71 @@
       .list-block ul a { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
       .item-meta { align-self: flex-start; }
     }
+
+    /* Engraved video plate */
+    .video-plate {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      cursor: pointer;
+      border: 0.5px solid var(--ink);
+      box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 3.5px var(--ink);
+      overflow: hidden;
+      background: var(--paper-2);
+    }
+    .video-plate img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: grayscale(1) contrast(1.15) brightness(1.06) sepia(0.28);
+      mix-blend-mode: multiply;
+    }
+    .video-plate::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(circle, rgba(44,58,77,0.55) 0.5px, transparent 1px) 0 0/4px 4px,
+        linear-gradient(0deg, rgba(201,137,104,0.12), rgba(201,137,104,0.12));
+      mix-blend-mode: multiply; opacity: 0.55;
+    }
+    .video-plate .plate-play {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 58px; height: 58px; border-radius: 50%;
+      background: rgba(236,232,222,0.9); border: 1px solid var(--ink);
+      display: flex; align-items: center; justify-content: center; z-index: 2;
+    }
+    .video-plate .plate-play::after {
+      content: ""; width: 0; height: 0;
+      border-left: 17px solid var(--ink);
+      border-top: 11px solid transparent; border-bottom: 11px solid transparent;
+      margin-left: 4px;
+    }
+    .video-plate.is-playing { cursor: default; box-shadow: none; }
+    .video-plate.is-playing::after, .video-plate.is-playing .plate-play { display: none; }
+    .video-plate iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    /* Scoreboard */
+    .scoreboard {
+      max-width: 640px; margin: 1.5rem auto 0;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 0.5px solid var(--rule); border-bottom: 0.5px solid var(--rule);
+    }
+    .sb-cell { text-align: center; padding: 1rem 0.6rem; border-right: 0.5px solid var(--rule); }
+    .sb-cell:last-child { border-right: 0; }
+    .sb-label {
+      font-family: var(--font-caps); font-size: 0.56rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--ink-mut); display: block; margin-bottom: 0.5rem;
+    }
+    .sb-big { font-family: var(--font-display); font-weight: 600; font-size: 2.2rem; line-height: 1; color: var(--ink); display: block; }
+    .sb-unit { font-size: 0.72rem; color: var(--ink-dim); display: block; margin-top: 0.15rem; }
+    .sb-chip {
+      display: inline-block; margin-top: 0.55rem; font-family: var(--font-caps);
+      font-size: 0.56rem; letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 0.12rem 0.6rem; border-radius: 20px; border: 0.5px solid var(--rule); color: var(--ink-mut);
+    }
+    .sb-chip.ok { color: #3f6f4a; border-color: #9bbf97; }
+    .sb-chip.due { color: #9a6b1f; border-color: #d8bd84; }
+    .sb-chip.miss { color: #a8443a; border-color: #d6a59c; }
+
+    /* Latest devotional slot reuses .list-block styles already defined above */
+    #latest-devotional a { display:flex; align-items:baseline; justify-content:space-between; gap:1.5rem; text-decoration:none; color:var(--ink); }
   </style>
 </head>
 <body>
@@ -201,8 +241,11 @@
       <header class="cartouche">
         <div class="cartouche-name"><a href="/">HENRY <span class="cartouche-dot"></span> PAN</a></div>
         <nav class="cartouche-nav" aria-label="primary">
-          <a href="/essays">essays</a>
+          <a href="/devotionals">devotionals</a>
           <a href="/lindy-library">library</a>
+          <a href="/essays">writing</a>
+          <a href="/graph">graph</a>
+          <a href="/about">about</a>
           <a href="/contact">contact</a>
         </nav>
       </header>
@@ -226,11 +269,26 @@
       </section>
 
       <div class="video-wrap">
-        <div class="video-frame">
-          <iframe src="https://www.youtube.com/embed/709ucVlxxEg?si=3_gZHn3snQeTfDL4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div class="video-plate" id="video-plate" role="button" tabindex="0" aria-label="Play latest video">
+          <img alt="">
+          <span class="plate-play" aria-hidden="true"></span>
+          <noscript><a href="https://www.youtube.com/@henrybpan">Watch on YouTube</a></noscript>
         </div>
-        <p class="video-caption">essay-videos on <a href="https://www.youtube.com/@henrybpan" target="_blank" rel="noopener noreferrer">YouTube</a></p>
       </div>
+
+      <section class="scoreboard" aria-label="commitments">
+        <div class="sb-cell" id="sb-devo"><span class="sb-label">1 Devo / Day</span><span class="sb-big">—</span><span class="sb-unit">day streak</span><span class="sb-chip"></span></div>
+        <div class="sb-cell" id="sb-video"><span class="sb-label">1 Video / Week</span><span class="sb-big">—</span><span class="sb-unit"></span><span class="sb-chip"></span></div>
+        <div class="sb-cell" id="sb-essay"><span class="sb-label">1 Essay / Month</span><span class="sb-big">—</span><span class="sb-unit">this month</span><span class="sb-chip"></span></div>
+      </section>
+
+      <div class="rule-pair"></div>
+
+      <section class="list-block">
+        <p class="list-label">latest devotional</p>
+        <ul><li id="latest-devotional"></li></ul>
+        <a href="/devotionals" class="more-link">all devotionals</a>
+      </section>
 
       <div class="rule-pair"></div>
 
@@ -273,5 +331,6 @@
     <div class="colophon-line">Set in Cormorant &amp; Garamond. Charlottesville, Virginia.</div>
   </footer>
 
+  <script type="module" src="/assets/home.js?v=1"></script>
 </body>
 </html>

@@ -94,6 +94,29 @@ Both SVGs live in the DOM and crossfade via `[data-theme]` selectors.
 - Open Graph + Twitter Card meta tags live only on `index.html`; preview image is `/preview.png`; canonical URL is `https://henrybpan.com/`.
 - When adding a new themed page: include the anti-flash inline script + `<link rel="stylesheet" href="/assets/theme.css?v=N">` + `<script src="/assets/theme.js?v=N" defer></script>` + the `.theme-toggle` button markup, and use CSS variables (`var(--fg)` etc.) instead of hardcoded color literals. The `?v=N` query string busts the Cloudflare + browser cache whenever `theme.css` or `theme.js` changes — bump the number across all themed pages in lockstep whenever you edit either file (currently `v=2`).
 
+## Accountability dashboard
+
+The homepage (`index.html`) is a Camel-pack accountability dashboard.
+
+**Publishing a devotional:** add `_devotionals/YYYY-MM-DD-slug.md` with frontmatter
+`title:` + `date:` (YYYY-MM-DD), body in markdown. Then run
+`cd scripts && python3 build_dashboard.py` (omit `--offline` to refresh the latest
+YouTube video). Commit the new `devotionals/<slug>/` + `devotionals/index.html` +
+`assets/data/dates.json`. Push → GitHub Pages deploys.
+
+**Data flow:** the build writes `assets/data/dates.json`
+(`devotionalDates`, `latestDevotional`, `latestVideo`, `lastVideo`, `lastEssay`).
+`assets/home.js` fetches it and renders the scoreboard (via `assets/scoreboard.js`),
+the engraved video plate (click-to-play), and the latest devotional. The scoreboard
+streak/status is computed client-side from today's date, so a missed day shows as
+broken without a rebuild.
+
+**Commitments config:** `_commitments.json` holds `youtubeChannelId` and `lastEssay`
+(bump `lastEssay` when a new essay ships so the monthly cell stays accurate).
+
+**Tests:** `python3 -m pytest tests/test_dashboard_lib.py` and
+`node --test test/scoreboard.test.mjs`.
+
 ## Testimonies & Results page
 
 **File:** `testimonies-results/index.html`
