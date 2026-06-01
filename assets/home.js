@@ -37,7 +37,7 @@ function renderPlate(data) {
   const img = plate.querySelector('img');
   img.src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
   img.alt = data.latestVideo.title || '';
-  plate.addEventListener('click', () => {
+  const play = () => {
     const f = document.createElement('iframe');
     f.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
     f.title = data.latestVideo.title || 'video';
@@ -45,21 +45,33 @@ function renderPlate(data) {
     f.allowFullscreen = true;
     plate.replaceChildren(f);
     plate.classList.add('is-playing');
-  }, { once: true });
+  };
+  plate.addEventListener('click', play, { once: true });
+  plate.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); plate.click(); }
+  });
 }
 
 function renderLatestDevotional(data) {
   const slot = document.getElementById('latest-devotional');
   if (!slot || !data.latestDevotional) return;
   const d = data.latestDevotional;
-  slot.innerHTML =
-    `<a href="/devotionals/${d.slug}"><span class="item-title">${d.title}</span>` +
-    `<span class="item-meta">${d.date}</span></a>`;
+  const a = document.createElement('a');
+  a.href = `/devotionals/${encodeURIComponent(d.slug)}`;
+  const title = document.createElement('span');
+  title.className = 'item-title';
+  title.textContent = d.title;
+  const meta = document.createElement('span');
+  meta.className = 'item-meta';
+  meta.textContent = d.date;
+  a.append(title, meta);
+  slot.replaceChildren(a);
 }
 
 async function init() {
   try {
     const res = await fetch('/assets/data/dates.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`dates.json ${res.status}`);
     const data = await res.json();
     const today = todayISO();
     renderScoreboard(data, today);

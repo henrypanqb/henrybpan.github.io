@@ -1,5 +1,7 @@
+import html
 import re
 import xml.etree.ElementTree as ET
+from urllib.parse import quote
 
 
 def slugify(text):
@@ -121,21 +123,23 @@ def _shell(title, inner):
 
 
 def render_devotional_page(title, date, body_html):
+    safe_title = html.escape(title)
+    safe_date = html.escape(date)
     inner = f"""      <article class="devotional" style="max-width:640px;margin:0 auto;padding:0 1rem;">
-        <p class="list-label" style="text-align:center">{date}</p>
-        <h1 style="font-family:var(--font-display);text-align:center;font-weight:500;">{title}</h1>
+        <p class="list-label" style="text-align:center">{safe_date}</p>
+        <h1 style="font-family:var(--font-display);text-align:center;font-weight:500;">{safe_title}</h1>
         <div class="devotional-body" style="font-size:1.1rem;line-height:1.75;">{body_html}</div>
         <a href="/devotionals" class="more-link">all devotionals</a>
       </article>"""
-    return _shell(title, inner)
+    return _shell(safe_title, inner)
 
 
 def render_archive_page(entries):
     rows = sorted(entries, key=lambda e: e["date"], reverse=True)
     items = "\n".join(
-        f'          <li><a href="/devotionals/{e["slug"]}">'
-        f'<span class="item-title">{e["title"]}</span>'
-        f'<span class="item-meta">{e["date"]}</span></a></li>'
+        f'          <li><a href="/devotionals/{quote(e["slug"])}">'
+        f'<span class="item-title">{html.escape(e["title"])}</span>'
+        f'<span class="item-meta">{html.escape(e["date"])}</span></a></li>'
         for e in rows
     )
     inner = f"""      <section class="list-block">
