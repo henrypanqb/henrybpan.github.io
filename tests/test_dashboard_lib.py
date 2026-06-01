@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from scripts.dashboard_lib import slugify, parse_frontmatter, parse_youtube_rss
+from scripts.dashboard_lib import slugify, parse_frontmatter, parse_youtube_rss, build_dates
 
 
 def test_slugify_basic():
@@ -32,3 +32,17 @@ def test_parse_youtube_rss_picks_newest():
     assert result["latestVideo"]["id"] == "709ucVlxxEg"
     assert result["latestVideo"]["title"] == "Latest essay-video"
     assert result["lastVideo"] == "2026-05-28"
+
+
+def test_build_dates_assembles_payload():
+    devos = [
+        {"date": "2026-05-31", "title": "B", "slug": "b", "excerpt": "ex b"},
+        {"date": "2026-06-01", "title": "A", "slug": "a", "excerpt": "ex a"},
+    ]
+    feed = {"latestVideo": {"id": "709ucVlxxEg", "title": "V"}, "lastVideo": "2026-05-28"}
+    out = build_dates(devos, feed, last_essay="2025-11-01")
+    assert out["devotionalDates"] == ["2026-05-31", "2026-06-01"]
+    assert out["latestDevotional"]["slug"] == "a"   # newest by date
+    assert out["latestVideo"]["id"] == "709ucVlxxEg"
+    assert out["lastVideo"] == "2026-05-28"
+    assert out["lastEssay"] == "2025-11-01"

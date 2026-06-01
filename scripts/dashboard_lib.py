@@ -44,3 +44,16 @@ def parse_youtube_rss(xml_text):
     parsed.sort(reverse=True)  # newest published first
     published, vid, title = parsed[0]
     return {"latestVideo": {"id": vid, "title": title}, "lastVideo": published[:10]}
+
+
+def build_dates(devotionals, feed, last_essay):
+    """devotionals: list of {date,title,slug,excerpt}. Returns the dates.json payload."""
+    ordered = sorted(devotionals, key=lambda d: d["date"])
+    latest = ordered[-1] if ordered else None
+    return {
+        "devotionalDates": [d["date"] for d in ordered],
+        "latestDevotional": latest,
+        "latestVideo": feed.get("latestVideo"),
+        "lastVideo": feed.get("lastVideo"),
+        "lastEssay": last_essay,
+    }
