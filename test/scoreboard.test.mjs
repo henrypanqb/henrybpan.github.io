@@ -38,3 +38,14 @@ test('essayStatus done when in current calendar month, else due', () => {
   assert.equal(essayStatus('2026-06-01', '2026-06-15').status, 'done');
   assert.equal(essayStatus('2026-05-31', '2026-06-15').status, 'due');
 });
+
+test('streak is 0 for an empty dates array', () => {
+  assert.equal(devotionalStreak([], '2026-06-01'), 0);
+});
+
+test('devotionalStatus during grace exposes the protected streak count', () => {
+  // today (2026-06-01) not yet posted, but a 2-day streak through yesterday is protected
+  const result = devotionalStatus(['2026-05-31', '2026-05-30'], '2026-06-01');
+  assert.equal(result.status, 'grace');
+  assert.equal(result.streak, 2);
+});
