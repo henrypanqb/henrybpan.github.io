@@ -1,4 +1,5 @@
 import re
+import xml.etree.ElementTree as ET
 
 
 def slugify(text):
@@ -21,3 +22,25 @@ def parse_frontmatter(raw):
             key, _, value = line.partition(":")
             meta[key.strip()] = value.strip()
     return meta, body.lstrip("\n")
+
+
+_ATOM = "{http://www.w3.org/2005/Atom}"
+_YT = "{http://www.youtube.com/xml/schemas/2015}"
+
+
+def parse_youtube_rss(xml_text):
+    """Parse a YouTube channel Atom feed -> {latestVideo:{id,title}, lastVideo:'YYYY-MM-DD'}."""
+    root = ET.fromstring(xml_text)
+    entries = root.findall(f"{_ATOM}entry")
+    parsed = []
+    for e in entries:
+        vid = e.findtext(f"{_YT}videoId")
+        title = e.findtext(f"{_ATOM}title")
+        published = e.findtext(f"{_ATOM}published")  # ISO 8601
+        if vid and published:
+            parsed.append((published, vid, title))
+    if not parsed:
+        return {"latestVideo": None, "lastVideo": None}
+    parsed.sort(reverse=True)  # newest published first
+    published, vid, title = parsed[0]
+    return {"latestVideo": {"id": vid, "title": title}, "lastVideo": published[:10]}

@@ -1,4 +1,6 @@
-from scripts.dashboard_lib import slugify, parse_frontmatter
+from pathlib import Path
+
+from scripts.dashboard_lib import slugify, parse_frontmatter, parse_youtube_rss
 
 
 def test_slugify_basic():
@@ -22,3 +24,11 @@ def test_parse_frontmatter_requires_fence():
     meta, body = parse_frontmatter(raw)
     assert meta == {}
     assert body == "no frontmatter here"
+
+
+def test_parse_youtube_rss_picks_newest():
+    xml = Path("tests/fixtures/youtube_feed.xml").read_text()
+    result = parse_youtube_rss(xml)
+    assert result["latestVideo"]["id"] == "709ucVlxxEg"
+    assert result["latestVideo"]["title"] == "Latest essay-video"
+    assert result["lastVideo"] == "2026-05-28"
