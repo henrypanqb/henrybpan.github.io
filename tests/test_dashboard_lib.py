@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from scripts.dashboard_lib import slugify, parse_frontmatter, parse_youtube_rss, build_dates
+from scripts.dashboard_lib import slugify, parse_frontmatter, parse_youtube_rss, build_dates, render_devotional_page, render_archive_page
 
 
 def test_slugify_basic():
@@ -46,3 +46,23 @@ def test_build_dates_assembles_payload():
     assert out["latestVideo"]["id"] == "709ucVlxxEg"
     assert out["lastVideo"] == "2026-05-28"
     assert out["lastEssay"] == "2025-11-01"
+
+
+def test_render_devotional_page_has_theme_and_content():
+    html = render_devotional_page(
+        title="On Waiting Well", date="2026-06-01", body_html="<p>Hello.</p>")
+    assert "/assets/theme.css?v=13" in html
+    assert "On Waiting Well" in html
+    assert "<p>Hello.</p>" in html
+    assert "blend-band" in html
+    assert "localStorage.getItem('theme')" in html  # anti-flash script present
+
+
+def test_render_archive_lists_entries_newest_first():
+    entries = [
+        {"date": "2026-05-31", "title": "B", "slug": "b"},
+        {"date": "2026-06-01", "title": "A", "slug": "a"},
+    ]
+    html = render_archive_page(entries)
+    assert html.index("/devotionals/a") < html.index("/devotionals/b")  # newest first
+    assert "/assets/theme.css?v=13" in html
