@@ -1,6 +1,8 @@
 import { devotionalStatus, videoStatus, essayStatus } from './scoreboard.js';
 
-const todayISO = () => new Date().toISOString().slice(0, 10);
+// Viewer-local calendar day (sv locale yields YYYY-MM-DD) so the streak clock
+// matches the visitor's own date rather than rolling over early in UTC.
+const todayISO = () => new Date().toLocaleDateString('sv');
 
 function setCell(id, big, unit, statusText, statusClass) {
   const el = document.getElementById(id);
