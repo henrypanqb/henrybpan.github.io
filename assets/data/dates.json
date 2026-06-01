@@ -1,7 +1,10 @@
 {
   "devotionalDates": [],
   "latestDevotional": null,
-  "latestVideo": null,
-  "lastVideo": null,
+  "latestVideo": {
+    "id": "709ucVlxxEg",
+    "title": "how then, shall we live? | History of Christian Ethics Final Project"
+  },
+  "lastVideo": "2026-05-04",
   "lastEssay": "2025-11-01"
 }
