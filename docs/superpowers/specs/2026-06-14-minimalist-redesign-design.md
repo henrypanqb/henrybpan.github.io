@@ -7,8 +7,8 @@
 
 Replace the elaborate "Camel-pack accountability dashboard" front door with a
 minimalist, text-first site in the spirit of **paulgraham.com**, **sive.rs**, and
-**caseyneistat.com**: flat cream background, grey/black serif text, left-aligned,
-no icons, no frame, no texture. Cormorant Garamond throughout.
+**caseyneistat.com**: flat cream background, grey/black text, left-aligned,
+no icons, no frame, no texture. Satoshi throughout.
 
 Nothing is deleted. The existing site is preserved and stays reachable by direct
 URL; the redesign is built *on top* and only swaps what the homepage links to.
@@ -18,7 +18,9 @@ URL; the redesign is built *on top* and only swaps what the homepage links to.
 - Background: flat cream `#ece8de` (same hue as today, but **no** paper-noise
   texture and **no** navy frame).
 - Text: grey/near-black `#1c1c1c` primary, `#6b6b6b` muted/secondary.
-- Type: Cormorant Garamond for everything (display + body). EB Garamond as
+- Type: **Satoshi** for everything (display + body), loaded from Fontshare
+  (`https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap`).
+  System sans-serif (`ui-sans-serif, system-ui, -apple-system, sans-serif`) as
   fallback only.
 - Layout: single left-aligned narrow column (~640px max), generous whitespace.
 - Links: plain text, underlined on the body / unobtrusive in nav. **No icons
@@ -47,7 +49,7 @@ URL; the redesign is built *on top* and only swaps what the homepage links to.
 ## Pages
 
 ### 1. `/` — homepage
-- "Henry Pan" as a plain heading (Cormorant). No bio, no tagline (per Henry:
+- "Henry Pan" as a plain heading (Satoshi). No bio, no tagline (per Henry:
   "name only").
 - Left-aligned text link list, in order:
   **Writings · Library · YouTube · Instagram · About · Contact**
@@ -106,7 +108,7 @@ Top-to-bottom, clearly ranked:
 
 - Manual: serve locally, load `/`, `/writings/`, `/library/`, `/about/`,
   `/contact/`, and confirm: correct links, cream `#ece8de` background, grey/black
-  Cormorant text, left-aligned, no icons, no frame.
+  Satoshi text, left-aligned, no icons, no frame.
 - Confirm `/archive/index.html` still renders the old dashboard identically
   (theme.css untouched).
 - Confirm all legacy pages still load by direct URL.
