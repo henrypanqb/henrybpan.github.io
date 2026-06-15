@@ -4,220 +4,27 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="/favicon.png?v=4">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Get in touch with Henry Pan — collaborations, partnerships, speaking, or a simple hello.">
+  <meta name="description" content="Contact Henry Pan.">
   <title>contact — Henry Pan</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/theme.css?v=13">
-  <style>
-    .page-head {
-      max-width: 720px;
-      margin: 0 auto clamp(2rem, 4vw, 3rem);
-      text-align: center;
-      padding: 0 clamp(0.5rem, 2vw, 1.2rem);
-    }
-    .page-head h1 {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-weight: 500;
-      font-size: clamp(2.6rem, 6vw, 4.4rem);
-      line-height: 1;
-      color: var(--ink);
-      margin-bottom: 0.7rem;
-    }
-    .page-head p {
-      font-family: var(--font-display);
-      font-style: italic;
-      color: var(--ink-mut);
-      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
-      line-height: 1.6;
-      max-width: 32rem;
-      margin: 0 auto;
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-      gap: clamp(2rem, 5vw, 4rem);
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 0 clamp(0.5rem, 2vw, 1.5rem);
-      align-items: start;
-    }
-    @media (max-width: 720px) {
-      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
-    }
-    .direct-block {
-      text-align: center;
-    }
-    .direct-label {
-      font-family: var(--font-caps);
-      font-size: 0.66rem;
-      letter-spacing: 0.32em;
-      text-indent: 0.32em;
-      color: var(--ink-dim);
-      margin-bottom: 1.1rem;
-      display: block;
-    }
-    .direct-links { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.2rem; }
-    .direct-links a {
-      color: var(--ink-dim); text-decoration: none; display: inline-flex;
-      transition: color 0.25s ease, transform 0.2s ease;
-    }
-    .direct-links a:hover { color: var(--ember); transform: translateY(-1px); }
-    .direct-links svg { width: 22px; height: 22px; display: block; }
-
-    form { margin: 0; }
-    .field { margin-bottom: 1.4rem; }
-    label {
-      display: block;
-      font-family: var(--font-caps);
-      font-size: 0.66rem;
-      letter-spacing: 0.28em;
-      text-indent: 0.28em;
-      color: var(--ink-dim);
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-    input[type="text"], input[type="email"], select, textarea {
-      width: 100%;
-      padding: 0.8rem 0.95rem;
-      font-family: var(--font-body);
-      font-size: 1.05rem;
-      line-height: 1.5;
-      border: 1px solid var(--ink);
-      background: var(--paper);
-      color: var(--ink);
-      border-radius: 0;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px var(--ember);
-    }
-    select {
-      appearance: none; -webkit-appearance: none;
-      background-image: linear-gradient(45deg, transparent 50%, var(--ink-mut) 50%),
-                        linear-gradient(135deg, var(--ink-mut) 50%, transparent 50%);
-      background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%;
-      background-size: 6px 6px;
-      background-repeat: no-repeat;
-      padding-right: 2rem;
-    }
-    textarea { resize: vertical; min-height: 7.5rem; }
-    button {
-      width: 100%;
-      padding: 0.95rem 1rem;
-      background: var(--ink);
-      color: var(--paper);
-      border: 1px solid var(--ink);
-      font-family: var(--font-caps);
-      font-size: 0.72rem;
-      letter-spacing: 0.32em;
-      text-indent: 0.32em;
-      text-transform: uppercase;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.15s ease, transform 0.15s ease;
-      margin-top: 0.4rem;
-    }
-    button:hover { opacity: 0.88; transform: translateY(-1px); }
-    .status {
-      margin-top: 1rem;
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 1rem;
-      color: var(--ink-mut);
-      min-height: 1.4em;
-    }
-    .status.ok { color: var(--ink); }
-    .status.err { color: #b94848; }
-  </style>
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+  <link rel="stylesheet" href="/assets/minimal.css?v=1">
 </head>
 <body>
-
-  <div class="pack-frame">
-    <!-- Camel-pack stepped corners -->
-    <span class="pack-corner tl" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-    <span class="pack-corner tr" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-    <span class="pack-corner bl" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-    <span class="pack-corner br" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-
-  <main class="sheet">
-
-    <div class="est-badge">EST. MMVI</div>
-
-    <header class="cartouche">
-      <div class="cartouche-name"><a href="/">HENRY <span class="cartouche-dot"></span> PAN</a></div>
-      <nav class="cartouche-nav" aria-label="primary">
-        <a href="/essays">essays</a>
-        <a href="/lindy-library">library</a>
-        <a href="/contact" aria-current="page">contact</a>
-      </nav>
-    </header>
-
-    <div class="page-head">
-      <h1>contact</h1>
-      <p>collaborations, partnerships, speaking, or just saying hi — send me a note.</p>
+  <main class="wrap">
+    <a class="home-link" href="/">Henry Pan</a>
+    <h1 class="title">Contact</h1>
+    <div class="prose">
+      <p>Collaborations, partnerships, speaking, or just saying hi — send me a note.</p>
     </div>
-
-    <div class="fish" aria-hidden="true"><svg viewBox="0 0 60 30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15 C 12 0, 35 0, 45 15 C 50 11, 55 8, 58 5"/><path d="M2 15 C 12 30, 35 30, 45 15 C 50 19, 55 22, 58 25"/></svg></div>
-
-    <div class="contact-grid">
-      <aside class="direct-block">
-        <span class="direct-label">REACH ME DIRECTLY</span>
-        <div class="direct-links">
-          <a href="mailto:work@henrybpan.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg></a>
-          <a href="https://www.instagram.com/henrybpan" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.5" cy="6.5" r="0.85" fill="currentColor" stroke="none"/></svg></a>
-          <a href="https://www.youtube.com/@henrybpan" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg></a>
-          <a href="https://www.tiktok.com/@henrybpan" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.74a8.16 8.16 0 0 0 4.77 1.52V6.83a4.85 4.85 0 0 1-1.84-.14z"/></svg></a>
-          <a href="https://x.com/henrypanonx" target="_blank" rel="noopener noreferrer" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-          <a href="https://www.linkedin.com/in/henrybpan/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg></a>
-        </div>
-      </aside>
-
-      <form id="contact-form" action="https://formspree.io/f/xqewvkjk" method="POST">
-        <div class="field"><label for="name">YOUR NAME</label><input type="text" id="name" name="name" required autocomplete="name"></div>
-        <div class="field"><label for="email">YOUR EMAIL</label><input type="email" id="email" name="email" required autocomplete="email"></div>
-        <div class="field">
-          <label for="subject">WHAT'S THIS ABOUT?</label>
-          <select id="subject" name="subject" required>
-            <option value="" disabled selected>Choose one</option>
-            <option value="general">General inquiry</option>
-            <option value="collaboration">Collaboration</option>
-            <option value="partnership">Brand partnership</option>
-            <option value="speaking">Speaking / podcast</option>
-            <option value="other">Something else</option>
-          </select>
-        </div>
-        <div class="field"><label for="message">YOUR MESSAGE</label><textarea id="message" name="message" required rows="5"></textarea></div>
-        <button type="submit">Send message</button>
-        <p class="status" id="status" role="status" aria-live="polite"></p>
-      </form>
-    </div>
-    <div class="blend-band">PHILOSOPHY &amp; ECONOMICS BLEND</div>
+    <ul class="list">
+      <li><a href="mailto:work@henrybpan.com"><span class="row-title">Email</span><span class="row-meta">work@henrybpan.com</span></a></li>
+      <li><a href="https://www.instagram.com/henrybpan" target="_blank" rel="noopener noreferrer"><span class="row-title">Instagram</span><span class="row-meta">@henrybpan</span></a></li>
+      <li><a href="https://www.youtube.com/@henrybpan" target="_blank" rel="noopener noreferrer"><span class="row-title">YouTube</span><span class="row-meta">@henrybpan</span></a></li>
+      <li><a href="https://www.tiktok.com/@henrybpan" target="_blank" rel="noopener noreferrer"><span class="row-title">TikTok</span><span class="row-meta">@henrybpan</span></a></li>
+      <li><a href="https://x.com/henrypanonx" target="_blank" rel="noopener noreferrer"><span class="row-title">X</span><span class="row-meta">@henrypanonx</span></a></li>
+      <li><a href="https://www.linkedin.com/in/henrybpan/" target="_blank" rel="noopener noreferrer"><span class="row-title">LinkedIn</span><span class="row-meta">in/henrybpan</span></a></li>
+    </ul>
   </main>
-  </div>
-
-  <footer class="colophon">
-    <div class="colophon-line">Set in Cormorant &amp; Garamond. Charlottesville, Virginia — MMXXVI.</div>
-  </footer>
-
-  <script>
-    (function () {
-      var form = document.getElementById('contact-form');
-      var status = document.getElementById('status');
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        status.className = 'status'; status.textContent = 'Sending…';
-        try {
-          var res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
-          if (res.ok) { form.reset(); status.className = 'status ok'; status.textContent = 'Sent. I’ll get back to you soon.'; }
-          else { var data = await res.json().catch(function () { return {}; }); status.className = 'status err'; status.textContent = (data && data.error) || 'Something went wrong. Try emailing me directly.'; }
-        } catch (err) { status.className = 'status err'; status.textContent = 'Network error. Try emailing me directly.'; }
-      });
-    }());
-  </script>
 </body>
 </html>
