@@ -4,60 +4,35 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="/favicon.png?v=4">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="On emotional vulnerability, articulation, and why people seem to want to watch.">
+  <meta name="description" content="Why do people watch me? — an essay by Henry Pan.">
   <title>why do people watch me? — Henry Pan</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/theme.css?v=13">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+  <link rel="stylesheet" href="/assets/minimal.css?v=1">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-font-smoothing: antialiased; }
-    body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: clamp(1.05rem, 1.9vw, 1.18rem); line-height: 1.72; min-height: 100dvh; }
-    .page { max-width: 720px; margin: 0 auto; padding: clamp(4rem, 9vw, 7rem) clamp(2rem, 6vw, 3rem) clamp(3rem, 8vw, 5rem); }
-    .back { display: inline-block; font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-dim); text-decoration: none; margin-bottom: clamp(2rem, 5vw, 3rem); transition: color 0.15s ease, transform 0.2s ease; }
-    .back:hover { color: var(--fg); transform: translateX(-2px); }
-    h1 { font-family: var(--font-display); font-size: clamp(2rem, 5.5vw, 2.8rem); font-weight: 500; letter-spacing: 0.005em; line-height: 1.1; margin-bottom: 0.6rem; }
-    .date { font-size: 0.82rem; color: var(--fg-dim); letter-spacing: 0.08em; margin-bottom: clamp(2rem, 5vw, 3rem); display: block; }
-    .essay h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.3rem, 3vw, 1.55rem); margin: 2.2rem 0 0.9rem; color: var(--fg); }
-    .essay p { margin-bottom: 1.25rem; color: var(--fg); }
-    .essay blockquote { margin: 1.8rem 0; padding: 0.2rem 0 0.2rem 1.2rem; border-left: 2px solid var(--border-strong); color: var(--fg-mut); font-style: italic; }
-    .essay blockquote cite { display: block; margin-top: 0.5rem; font-size: 0.9rem; font-style: normal; color: var(--fg-dim); letter-spacing: 0.04em; }
-    .essay a { color: var(--fg); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; transition: text-decoration-color 0.15s ease; }
-    .essay a:hover { text-decoration-color: var(--fg); }
-    .end { margin-top: clamp(3rem, 6vw, 4rem); padding-top: 2rem; border-top: 1px solid var(--border); font-size: 0.95rem; color: var(--fg-mut); font-style: italic; }
-    .end a { color: var(--fg); font-style: normal; text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
-    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    .essay-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; align-items: baseline; margin-bottom: 2.25rem; }
+    .essay-date { color: var(--mut); font-size: 0.85rem; }
+    .read-source { color: var(--mut); font-size: 0.85rem; text-decoration: none; border-bottom: 1px solid var(--rule); }
+    .read-source:hover { color: var(--ink); border-color: var(--ink); }
+    .prose h2 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin: 2rem 0 0.6rem; }
+    .prose blockquote { margin: 1.4rem 0; padding-left: 1.1rem; border-left: 2px solid var(--rule); color: var(--mut); font-style: italic; }
+    .prose blockquote cite { display: block; margin-top: 0.5rem; font-style: normal; font-size: 0.9rem; }
+    .subscribe { margin-top: 3rem; padding-top: 1.6rem; border-top: 1px solid var(--rule); }
+    .subscribe-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mut); margin-bottom: 0.8rem; }
+    .subscribe-btn { display: inline-block; font-weight: 500; color: var(--paper); background: var(--ink); border: 1px solid var(--ink); padding: 0.55rem 1.2rem; text-decoration: none; transition: opacity 0.15s ease; }
+    .subscribe-btn:hover { opacity: 0.85; }
+    @media (prefers-reduced-motion: reduce) { .subscribe-btn { transition: none; } }
   </style>
 </head>
 <body>
-    <div class="pack-frame">
-    <!-- Camel-pack stepped corners -->
-    <span class="pack-corner tl" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-    <span class="pack-corner tr" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-    <span class="pack-corner bl" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-    <span class="pack-corner br" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-
-  <main class="sheet">
-
-    <div class="est-badge">EST. MMVI</div>
-
-    <header class="cartouche">
-      <div class="cartouche-name"><a href="/">HENRY <span class="cartouche-dot"></span> PAN</a></div>
-      <nav class="cartouche-nav" aria-label="primary">
-        <a href="/essays" aria-current="page">essays</a>
-        <a href="/lindy-library">library</a>
-        <a href="/contact">contact</a>
-      </nav>
-    </header>
-
-    <article class="essay-page" style="max-width: 720px; margin: 0 auto; padding: 0 clamp(0.5rem, 2vw, 1.5rem);">
-    <a href="/essays" class="back">← all essays</a>
-
-    <h1>why do people watch me?</h1>
-    <span class="date">Jul 22, 2025</span>
-
-    <article class="essay">
+  <main class="wrap">
+    <a class="home-link" href="/writings/">← Writings</a>
+    <h1 class="title">why do people watch me?</h1>
+    <div class="essay-meta">
+      <span class="essay-date">Jul 22, 2025</span>
+      <a class="read-source" href="https://henrybpan.substack.com/p/why-do-people-watch-me" target="_blank" rel="noopener noreferrer">Read on Substack ↗</a>
+    </div>
+    <div class="prose">
       <p>My dad thinks my videos are cringe.</p>
       <p>I attribute this to the fact that he is the typical Gen X Asian dad who is not in touch with his feelings.</p>
       <p>However this does bring up a fair question:</p>
@@ -74,18 +49,11 @@
       <p>That's because once a specific emotion is put into words, it becomes tangible. Tangible problems are much easier to solve than intangible ones. There's a reason why journaling works so well to organize and process your thoughts. Thoughts are fleeting, ephemeral things that return every once in a while to torment you then disappear as fast as they came. Writing them down chains them to permanence, so you can understand how and why you are thinking these things.</p>
       <p>So, I think that people watch me because I am able to articulate my emotional experiences, which they often relate to. I of course want to get better at doing this. I want to become more succinct, more thoughtful. I don't just want to be able to articulate my emotional troubles, I want to also be able to solve them, so that others can do the same. This will come with more reading, thinking, journaling, and time.</p>
       <p>That's it from me today.</p>
-    </article>
-
-    <div class="end">
-      Thanks for reading. <a href="/essays">More essays →</a>
     </div>
-      </article>
-    <div class="blend-band">PHILOSOPHY &amp; ECONOMICS BLEND</div>
+    <div class="subscribe">
+      <p class="subscribe-label">Newsletter</p>
+      <a class="subscribe-btn" href="https://henrybpan.substack.com/subscribe" target="_blank" rel="noopener noreferrer">Subscribe on Substack →</a>
+    </div>
   </main>
-  </div>
-
-  <footer class="colophon">
-    <div class="colophon-line">Set in Cormorant &amp; Garamond. Charlottesville, Virginia — MMXXVI.</div>
-  </footer>
 </body>
 </html>
