@@ -20,11 +20,24 @@
   <main class="wrap">
     <a class="home-link" href="/">Henry Pan</a>
     <h1 class="title">Quotes</h1>
-    <ul class="quotes">
-      <!-- TODO(henry): add quotes in this format:
-      <li><blockquote>"The quote text goes here."<cite>— Author</cite></blockquote></li>
-      -->
-    </ul>
+    <ul class="quotes" id="quotes"></ul>
   </main>
+  <script>
+    fetch('/assets/data/quotes.json').then(function (r) { return r.json(); }).then(function (items) {
+      var ul = document.getElementById('quotes');
+      items.forEach(function (q) {
+        var li = document.createElement('li');
+        var bq = document.createElement('blockquote');
+        bq.appendChild(document.createTextNode('“' + q.text + '”'));
+        if (q.author) {
+          var c = document.createElement('cite');
+          c.textContent = '— ' + q.author;
+          bq.appendChild(c);
+        }
+        li.appendChild(bq);
+        ul.appendChild(li);
+      });
+    }).catch(function () {});
+  </script>
 </body>
 </html>

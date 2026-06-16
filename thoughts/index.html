@@ -11,25 +11,47 @@
   <link rel="stylesheet" href="/assets/minimal.css?v=1">
   <style>
     .thoughts { list-style: none; }
-    .thoughts li { margin: 0 0 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--rule); }
+    .thoughts li { margin: 0 0 1.6rem; padding-bottom: 1.6rem; border-bottom: 1px solid var(--rule); }
     .thoughts li:last-child { border-bottom: 0; }
-    .thought-date { display: block; color: var(--mut); font-size: 0.8rem; letter-spacing: 0.04em; margin-bottom: 0.5rem; }
-    .thought-body p { margin: 0 0 0.8em; }
+    .thought-body { font-size: 1.08rem; line-height: 1.55; }
+    .thought-body p { margin: 0 0 0.7em; }
     .thought-body p:last-child { margin-bottom: 0; }
+    .thought-date { display: block; color: var(--mut); font-size: 0.8rem; letter-spacing: 0.03em; margin-top: 0.6rem; }
   </style>
 </head>
 <body>
   <main class="wrap">
     <a class="home-link" href="/">Henry Pan</a>
     <h1 class="title">Thoughts</h1>
-    <ul class="thoughts">
-      <!-- TODO(henry): add thoughts in this format (newest first):
-      <li>
-        <span class="thought-date">Jun 16, 2026</span>
-        <div class="thought-body"><p>The thought goes here.</p></div>
-      </li>
-      -->
-    </ul>
+    <ul class="thoughts" id="thoughts"></ul>
   </main>
+  <script>
+    var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    function fmtDate(iso) {
+      var p = String(iso).split('-');
+      if (p.length !== 3) return iso;
+      return MONTHS[(+p[1]) - 1] + ' ' + (+p[2]) + ', ' + p[0];
+    }
+    fetch('/assets/data/thoughts.json').then(function (r) { return r.json(); }).then(function (items) {
+      items.sort(function (a, b) { return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); });
+      var ul = document.getElementById('thoughts');
+      items.forEach(function (t) {
+        var li = document.createElement('li');
+        var body = document.createElement('div');
+        body.className = 'thought-body';
+        String(t.body).split(/\n\n+/).forEach(function (para) {
+          var p = document.createElement('p');
+          p.textContent = para;
+          body.appendChild(p);
+        });
+        li.appendChild(body);
+        var d = document.createElement('span');
+        d.className = 'thought-date';
+        d.textContent = fmtDate(t.date);
+        li.appendChild(d);
+        ul.appendChild(li);
+      });
+    }).catch(function () {});
+  </script>
 </body>
 </html>

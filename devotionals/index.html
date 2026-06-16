@@ -13,8 +13,11 @@
     .devotionals { list-style: none; }
     .devotionals li { margin: 0 0 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--rule); }
     .devotionals li:last-child { border-bottom: 0; }
-    .devo-date { display: block; color: var(--mut); font-size: 0.8rem; letter-spacing: 0.04em; margin-bottom: 0.4rem; }
-    .devo-title { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.7rem; }
+    .devo-date { display: block; color: var(--mut); font-size: 0.8rem; letter-spacing: 0.03em; margin-bottom: 0.4rem; }
+    .devo-title { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.35rem; }
+    .devo-passage { display: inline-block; margin-bottom: 0.8rem; color: var(--mut); font-size: 0.9rem; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+    .devo-passage:hover { color: var(--ink); text-decoration-color: var(--ink); }
+    .devo-body { line-height: 1.6; }
     .devo-body p { margin: 0 0 0.8em; }
     .devo-body p:last-child { margin-bottom: 0; }
   </style>
@@ -23,15 +26,59 @@
   <main class="wrap">
     <a class="home-link" href="/">Henry Pan</a>
     <h1 class="title">Devotionals</h1>
-    <ul class="devotionals">
-      <!-- TODO(henry): add devotionals in this format (newest first):
-      <li>
-        <span class="devo-date">Jun 16, 2026</span>
-        <h2 class="devo-title">Title</h2>
-        <div class="devo-body"><p>The devotional body goes here.</p></div>
-      </li>
-      -->
-    </ul>
+    <ul class="devotionals" id="devotionals"></ul>
   </main>
+  <script>
+    var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    function fmtDate(iso) {
+      var p = String(iso).split('-');
+      if (p.length !== 3) return iso;
+      return MONTHS[(+p[1]) - 1] + ' ' + (+p[2]) + ', ' + p[0];
+    }
+    function bibleGatewayUrl(passage, version) {
+      return 'https://www.biblegateway.com/passage/?search=' +
+        encodeURIComponent(passage) + '&version=' + encodeURIComponent(version || 'ESV');
+    }
+    fetch('/assets/data/devotionals.json').then(function (r) { return r.json(); }).then(function (items) {
+      items.sort(function (a, b) { return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); });
+      var ul = document.getElementById('devotionals');
+      items.forEach(function (d) {
+        var li = document.createElement('li');
+
+        var date = document.createElement('span');
+        date.className = 'devo-date';
+        date.textContent = fmtDate(d.date);
+        li.appendChild(date);
+
+        if (d.title) {
+          var h = document.createElement('h2');
+          h.className = 'devo-title';
+          h.textContent = d.title;
+          li.appendChild(h);
+        }
+
+        if (d.passage) {
+          var a = document.createElement('a');
+          a.className = 'devo-passage';
+          a.href = bibleGatewayUrl(d.passage, d.version);
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = d.passage;
+          li.appendChild(a);
+        }
+
+        var body = document.createElement('div');
+        body.className = 'devo-body';
+        String(d.body).split(/\n\n+/).forEach(function (para) {
+          var p = document.createElement('p');
+          p.textContent = para;
+          body.appendChild(p);
+        });
+        li.appendChild(body);
+
+        ul.appendChild(li);
+      });
+    }).catch(function () {});
+  </script>
 </body>
 </html>
