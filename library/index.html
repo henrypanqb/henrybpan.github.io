@@ -56,12 +56,23 @@
     .item.is-hidden { display: none; }
     .lib-section.is-hidden { display: none; }
 
-    @media (prefers-reduced-motion: reduce) { .chip { transition: none; } }
+    /* ---- a little life: staggered rise-in + hover accent ---- */
+    @keyframes riseIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .lib-section .section-label { animation: riseIn 0.5s ease both; }
+    .item { animation: riseIn 0.5s cubic-bezier(0.2,0.65,0.3,1) both; }
+    .list .row { transition: color 0.15s ease; }
+    .item:hover .row-title { color: #b06a43; }
+    .list a:hover .row-title { border-color: #c98968; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chip { transition: none; }
+      .item, .lib-section .section-label { animation: none; }
+    }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <a class="home-link" href="/">Henry Pan</a>
+    <a class="home-link" href="/">Henry B. Pan</a>
     <h1 class="title">Library</h1>
 
     <div class="lib-controls">
@@ -129,8 +140,7 @@
         <li class="item" data-status="" data-lindy="true" data-title="High Agency"><span class="row"><span class="row-title">High Agency</span><span class="row-meta">George Mack</span><span class="tag lindy">★ Lindy</span></span></li>
         <li class="item" data-status="" data-lindy="true" data-title="This is Water"><span class="row"><span class="row-title">This is Water</span><span class="row-meta">David Foster Wallace</span><span class="tag lindy">★ Lindy</span></span></li>
         <li class="item" data-status="" data-lindy="false" data-title="Against Taste"><a href="https://minutes.substack.com/p/against-taste" target="_blank" rel="noopener noreferrer"><span class="row-title">Against Taste</span><span class="row-meta">Will Manidis</span></a></li>
-        <!-- TODO(henry): couldn't confirm a Tim Denning essay titled "The Self Help Trap" — left unlinked. Send the URL and I'll wire it. -->
-        <li class="item" data-status="" data-lindy="false" data-title="The Self Help Trap"><span class="row"><span class="row-title">The Self Help Trap</span><span class="row-meta">Tim Denning</span></span></li>
+        <li class="item" data-status="" data-lindy="false" data-title="The Self Help Trap"><a href="https://tim.blog/2026/03/04/the-self-help-trap/" target="_blank" rel="noopener noreferrer"><span class="row-title">The Self Help Trap</span><span class="row-meta">Tim Ferriss</span></a></li>
         <li class="item" data-status="" data-lindy="false" data-title="The Laboratory and the Artist"><a href="https://clereviewofbooks.com/the-laboratory-and-the-artist/" target="_blank" rel="noopener noreferrer"><span class="row-title">The Laboratory and the Artist</span><span class="row-meta">Lucas Gelfond</span></a></li>
         <li class="item" data-status="" data-lindy="false" data-title="Shooting an Elephant"><a href="https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/shooting-an-elephant/" target="_blank" rel="noopener noreferrer"><span class="row-title">Shooting an Elephant</span><span class="row-meta">George Orwell</span></a></li>
         <li class="item" data-status="" data-lindy="false" data-title="Politics and the English Language"><a href="https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/politics-and-the-english-language/" target="_blank" rel="noopener noreferrer"><span class="row-title">Politics and the English Language</span><span class="row-meta">George Orwell</span></a></li>
@@ -146,6 +156,11 @@
         Array.prototype.slice.call(sec.querySelectorAll('.item')).forEach(function (li, i) {
           li.dataset.order = i;
         });
+      });
+
+      // A little life: stagger the rise-in across the whole list on load.
+      Array.prototype.slice.call(document.querySelectorAll('.item')).forEach(function (li, i) {
+        li.style.animationDelay = Math.min(i * 35, 560) + 'ms';
       });
 
       var chips = Array.prototype.slice.call(document.querySelectorAll('#filters .chip'));
