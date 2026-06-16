@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="/favicon.png?v=4">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Henry Pan's library — the best things he's read and watched, plus a running log.">
+  <title>library — Henry Pan</title>
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+  <link rel="stylesheet" href="/assets/minimal.css?v=1">
+  <style>
+    /* ---- Library controls (filter chips + sort) ---- */
+    .lib-controls {
+      display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: 1rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .filters { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .chip {
+      font-family: var(--font); font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.04em; color: var(--mut);
+      background: transparent; border: 1px solid var(--rule);
+      border-radius: 999px; padding: 0.28rem 0.72rem; cursor: pointer;
+      transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .chip:hover { color: var(--ink); border-color: var(--ink); }
+    .chip.is-active { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+    .chip-lindy { color: #b06a43; border-color: rgba(201,137,104,0.6); }
+    .chip-lindy:hover { color: #fff; background: #c98968; border-color: #c98968; }
+    .chip-lindy.is-active { color: #fff; background: #c98968; border-color: #c98968; }
+    .sort {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--mut);
+    }
+    .sort select {
+      font-family: var(--font); font-size: 0.85rem; font-weight: 500;
+      color: var(--ink); background: transparent;
+      border: 1px solid var(--rule); border-radius: 6px; padding: 0.32rem 0.5rem;
+      cursor: pointer;
+    }
+    .sort select:focus { outline: none; border-color: var(--ink); }
+
+    /* ---- Section counts ---- */
+    .count { color: var(--mut); font-weight: 500; letter-spacing: 0.04em; margin-left: 0.35rem; }
+
+    /* ---- A splash of color on the status chips ---- */
+    .tag.s-reading  { color: #2f6b43; border-color: rgba(47,107,67,0.45);  background: rgba(47,107,67,0.10); }
+    .tag.s-to-read  { color: #8a5a14; border-color: rgba(138,90,20,0.42);  background: rgba(138,90,20,0.10); }
+    .tag.s-read     { color: #345f7d; border-color: rgba(52,95,125,0.42);  background: rgba(52,95,125,0.10); }
+    .tag.s-to-watch { color: #8a5a14; border-color: rgba(138,90,20,0.42);  background: rgba(138,90,20,0.10); }
+    .tag.s-watched  { color: #345f7d; border-color: rgba(52,95,125,0.42);  background: rgba(52,95,125,0.10); }
+    .tag.lindy      { color: #fff;    border-color: #c98968;               background: #c98968; }
+
+    .item.is-hidden { display: none; }
+    .lib-section.is-hidden { display: none; }
+
+    /* ---- a little life: staggered rise-in + hover accent ---- */
+    @keyframes riseIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .lib-section .section-label { animation: riseIn 0.5s ease both; }
+    .item { animation: riseIn 0.5s cubic-bezier(0.2,0.65,0.3,1) both; }
+    .list .row { transition: color 0.15s ease; }
+    .item:hover .row-title { color: #b06a43; }
+    .list a:hover .row-title { border-color: #c98968; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chip { transition: none; }
+      .item, .lib-section .section-label { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a class="home-link" href="/">Henry Pan</a>
+    <h1 class="title">Library</h1>
+
+    <div class="lib-controls">
+      <div class="filters" id="filters" role="group" aria-label="Filter library">
+        <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="chip chip-lindy" data-filter="lindy" aria-pressed="false">★ Lindy</button>
+        <button type="button" class="chip" data-filter="reading" aria-pressed="false">Reading</button>
+        <button type="button" class="chip" data-filter="to-read" aria-pressed="false">To read</button>
+        <button type="button" class="chip" data-filter="read" aria-pressed="false">Read</button>
+        <button type="button" class="chip" data-filter="to-watch" aria-pressed="false">To watch</button>
+        <button type="button" class="chip" data-filter="watched" aria-pressed="false">Watched</button>
+      </div>
+      <label class="sort">Sort
+        <select id="sort" aria-label="Sort library">
+          <option value="default">Default</option>
+          <option value="lindy">Lindy first</option>
+          <option value="status">By status</option>
+          <option value="az">A–Z</option>
+        </select>
+      </label>
+    </div>
+
+    <section class="section lib-section" data-medium="book">
+      <p class="section-label">Books <span class="count" aria-hidden="true"></span></p>
+      <ul class="list">
+        <li class="item" data-status="reading" data-lindy="false" data-title="How to Win Friends and Influence People"><span class="row"><span class="row-title">How to Win Friends and Influence People</span><span class="row-meta">Dale Carnegie</span><span class="tag s-reading">Reading</span></span></li>
+        <li class="item" data-status="reading" data-lindy="false" data-title="Red Notice"><span class="row"><span class="row-title">Red Notice</span><span class="row-meta">Bill Browder</span><span class="tag s-reading">Reading</span></span></li>
+        <li class="item" data-status="reading" data-lindy="false" data-title="The Creative Act"><span class="row"><span class="row-title">The Creative Act</span><span class="row-meta">Rick Rubin</span><span class="tag s-reading">Reading</span></span></li>
+        <li class="item" data-status="to-read" data-lindy="false" data-title="Kitchen Confidential"><span class="row"><span class="row-title">Kitchen Confidential</span><span class="row-meta">Anthony Bourdain</span><span class="tag s-to-read">To read</span></span></li>
+        <li class="item" data-status="to-read" data-lindy="false" data-title="Ogilvy on Advertising"><span class="row"><span class="row-title">Ogilvy on Advertising</span><span class="row-meta">David Ogilvy</span><span class="tag s-to-read">To read</span></span></li>
+        <li class="item" data-status="to-read" data-lindy="false" data-title="Antifragile"><span class="row"><span class="row-title">Antifragile</span><span class="row-meta">Nassim Nicholas Taleb</span><span class="tag s-to-read">To read</span></span></li>
+        <li class="item" data-status="to-read" data-lindy="false" data-title="Thinking, Fast and Slow"><span class="row"><span class="row-title">Thinking, Fast and Slow</span><span class="row-meta">Daniel Kahneman</span><span class="tag s-to-read">To read</span></span></li>
+        <li class="item" data-status="to-read" data-lindy="false" data-title="Confessions"><span class="row"><span class="row-title">Confessions</span><span class="row-meta">Augustine of Hippo</span><span class="tag s-to-read">To read</span></span></li>
+        <li class="item" data-status="to-read" data-lindy="false" data-title="Augustine of Hippo: A Biography"><span class="row"><span class="row-title">Augustine of Hippo: A Biography</span><span class="row-meta">Peter Brown</span><span class="tag s-to-read">To read</span></span></li>
+        <li class="item" data-status="to-read" data-lindy="false" data-title="Christ and Culture"><span class="row"><span class="row-title">Christ and Culture</span><span class="row-meta">H. Richard Niebuhr</span><span class="tag s-to-read">To read</span></span></li>
+        <li class="item" data-status="to-read" data-lindy="false" data-title="The Sports Gene"><span class="row"><span class="row-title">The Sports Gene</span><span class="row-meta">David Epstein</span><span class="tag s-to-read">To read</span></span></li>
+        <li class="item" data-status="read" data-lindy="false" data-title="Zero to One"><span class="row"><span class="row-title">Zero to One</span><span class="row-meta">Peter Thiel</span><span class="tag s-read">Read</span></span></li>
+      </ul>
+    </section>
+
+    <section class="section lib-section" data-medium="movie">
+      <p class="section-label">Movies <span class="count" aria-hidden="true"></span></p>
+      <ul class="list">
+        <li class="item" data-status="watched" data-lindy="false" data-title="The Godfather"><span class="row"><span class="row-title">The Godfather</span><span class="row-meta">Francis Ford Coppola</span><span class="tag s-watched">Watched</span></span></li>
+      </ul>
+    </section>
+
+    <section class="section lib-section" data-medium="tv">
+      <p class="section-label">TV shows <span class="count" aria-hidden="true"></span></p>
+      <ul class="list">
+        <li class="item" data-status="watched" data-lindy="false" data-title="The Last Dance"><span class="row"><span class="row-title">The Last Dance</span><span class="row-meta">Jason Hehir</span><span class="tag s-watched">Watched</span></span></li>
+      </ul>
+    </section>
+
+    <section class="section lib-section" data-medium="podcast">
+      <p class="section-label">Podcasts <span class="count" aria-hidden="true"></span></p>
+      <ul class="list">
+        <li class="item" data-status="" data-lindy="true" data-title="Founders Podcast"><span class="row"><span class="row-title">Founders Podcast</span><span class="row-meta">David Senra</span><span class="tag lindy">★ Lindy</span></span></li>
+      </ul>
+    </section>
+
+    <section class="section lib-section" data-medium="essay">
+      <p class="section-label">Essays <span class="count" aria-hidden="true"></span></p>
+      <ul class="list">
+        <li class="item" data-status="" data-lindy="true" data-title="High Agency"><span class="row"><span class="row-title">High Agency</span><span class="row-meta">George Mack</span><span class="tag lindy">★ Lindy</span></span></li>
+        <li class="item" data-status="" data-lindy="true" data-title="This is Water"><span class="row"><span class="row-title">This is Water</span><span class="row-meta">David Foster Wallace</span><span class="tag lindy">★ Lindy</span></span></li>
+        <li class="item" data-status="" data-lindy="false" data-title="Against Taste"><a href="https://minutes.substack.com/p/against-taste" target="_blank" rel="noopener noreferrer"><span class="row-title">Against Taste</span><span class="row-meta">Will Manidis</span></a></li>
+        <li class="item" data-status="" data-lindy="false" data-title="The Self Help Trap"><a href="https://tim.blog/2026/03/04/the-self-help-trap/" target="_blank" rel="noopener noreferrer"><span class="row-title">The Self Help Trap</span><span class="row-meta">Tim Ferriss</span></a></li>
+        <li class="item" data-status="" data-lindy="false" data-title="The Laboratory and the Artist"><a href="https://clereviewofbooks.com/the-laboratory-and-the-artist/" target="_blank" rel="noopener noreferrer"><span class="row-title">The Laboratory and the Artist</span><span class="row-meta">Lucas Gelfond</span></a></li>
+        <li class="item" data-status="" data-lindy="false" data-title="Shooting an Elephant"><a href="https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/shooting-an-elephant/" target="_blank" rel="noopener noreferrer"><span class="row-title">Shooting an Elephant</span><span class="row-meta">George Orwell</span></a></li>
+        <li class="item" data-status="" data-lindy="false" data-title="Politics and the English Language"><a href="https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/politics-and-the-english-language/" target="_blank" rel="noopener noreferrer"><span class="row-title">Politics and the English Language</span><span class="row-meta">George Orwell</span></a></li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var sections = Array.prototype.slice.call(document.querySelectorAll('.lib-section'));
+      // Capture original DOM order for the "Default" sort.
+      sections.forEach(function (sec) {
+        Array.prototype.slice.call(sec.querySelectorAll('.item')).forEach(function (li, i) {
+          li.dataset.order = i;
+        });
+      });
+
+      // A little life: stagger the rise-in across the whole list on load.
+      Array.prototype.slice.call(document.querySelectorAll('.item')).forEach(function (li, i) {
+        li.style.animationDelay = Math.min(i * 35, 560) + 'ms';
+      });
+
+      var chips = Array.prototype.slice.call(document.querySelectorAll('#filters .chip'));
+      var sortSel = document.getElementById('sort');
+      var current = 'all';
+
+      function matches(li) {
+        if (current === 'all') return true;
+        if (current === 'lindy') return li.dataset.lindy === 'true';
+        return li.dataset.status === current;
+      }
+
+      function applyFilter() {
+        sections.forEach(function (sec) {
+          var items = Array.prototype.slice.call(sec.querySelectorAll('.item'));
+          var visible = 0;
+          items.forEach(function (li) {
+            var show = matches(li);
+            li.classList.toggle('is-hidden', !show);
+            if (show) visible++;
+          });
+          var countEl = sec.querySelector('.count');
+          if (countEl) countEl.textContent = visible ? '(' + visible + ')' : '';
+          sec.classList.toggle('is-hidden', visible === 0);
+        });
+      }
+
+      var statusRank = { 'reading': 0, 'to-read': 1, 'read': 2, 'to-watch': 3, 'watched': 4 };
+      function rank(li) {
+        var r = statusRank[li.dataset.status];
+        return r === undefined ? 99 : r;
+      }
+
+      function applySort(mode) {
+        sections.forEach(function (sec) {
+          var ul = sec.querySelector('.list');
+          var items = Array.prototype.slice.call(sec.querySelectorAll('.item'));
+          items.sort(function (a, b) {
+            if (mode === 'az') return a.dataset.title.localeCompare(b.dataset.title);
+            if (mode === 'lindy') {
+              var la = a.dataset.lindy === 'true' ? 0 : 1, lb = b.dataset.lindy === 'true' ? 0 : 1;
+              if (la !== lb) return la - lb;
+              return (+a.dataset.order) - (+b.dataset.order);
+            }
+            if (mode === 'status') {
+              var ra = rank(a), rb = rank(b);
+              if (ra !== rb) return ra - rb;
+              return (+a.dataset.order) - (+b.dataset.order);
+            }
+            return (+a.dataset.order) - (+b.dataset.order); // default
+          });
+          items.forEach(function (li) { ul.appendChild(li); });
+        });
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          current = chip.dataset.filter;
+          chips.forEach(function (c) {
+            var on = c === chip;
+            c.classList.toggle('is-active', on);
+            c.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+          applyFilter();
+        });
+      });
+      sortSel.addEventListener('change', function () { applySort(sortSel.value); });
+
+      applyFilter();
+    }());
+  </script>
+</body>
+</html>

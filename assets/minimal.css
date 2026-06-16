@@ -1,0 +1,120 @@
+/* ============================================================
+   MINIMAL THEME — redesign front door
+   Flat cream + grey/black ink + Satoshi. Left-aligned, text-first.
+   Used ONLY by the redesigned pages (/, /writings, /library,
+   /about, /contact). Does NOT touch legacy theme.css.
+============================================================ */
+
+:root {
+  --font: 'Satoshi', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --paper: #ece8de;   /* flat cream — same hue as legacy, no texture */
+  --ink:   #1c1c1c;   /* primary grey-black */
+  --mut:   #6b6b6b;   /* muted/secondary */
+  --rule:  #cfc9bb;   /* hairline on cream */
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: clamp(1rem, 1.2vw, 1.075rem);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0;
+  padding: clamp(3rem, 9vh, 6rem) clamp(1.25rem, 5vw, 2rem) 4rem
+           clamp(1.5rem, 6vw, 4rem);
+}
+
+/* Page heading (name / page title) */
+.title {
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.6rem;
+}
+
+/* Home link / back link at top of inner pages */
+.home-link {
+  display: inline-block;
+  color: var(--mut);
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+.home-link:hover { color: var(--ink); }
+
+/* Primary nav list on the homepage — plain text, no icons */
+.nav { list-style: none; }
+.nav li { margin: 0.45rem 0; }
+.nav a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease;
+}
+.nav a:hover { border-color: var(--ink); }
+
+/* Body copy (about / contact) */
+.prose p { margin: 0 0 1em; max-width: 60ch; }
+.prose a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 3px;
+}
+.prose a:hover { text-decoration-color: var(--ink); }
+
+/* Recommendation / essay lists */
+.section { margin: 0 0 2.75rem; }
+.section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: 0.9rem;
+}
+.list { list-style: none; }
+.list li { margin: 0.5rem 0; }
+.list a, .list .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.list a:hover .row-title { border-color: var(--ink); }
+.row-title {
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease;
+}
+.row-meta { color: var(--mut); font-size: 0.92em; }
+
+/* Minimalist status/medium chips — monochrome, hairline, no color coding */
+.tag {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--mut);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.08rem 0.5rem;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
