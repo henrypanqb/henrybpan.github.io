@@ -10,7 +10,10 @@
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
   <link rel="stylesheet" href="/assets/minimal.css?v=1">
   <style>
-    .updated { display: block; color: var(--mut); font-size: 0.85rem; margin-bottom: 2.25rem; }
+    .updated { display: block; color: var(--mut); font-size: 0.85rem; line-height: 1.55; }
+    .updated-group { margin-bottom: 2.25rem; }
+    .updated a { color: var(--mut); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+    .updated a:hover { color: var(--ink); text-decoration-color: var(--ink); }
     .prose h2 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin: 2.25rem 0 0.6rem; }
     .prose ol { margin: 0 0 1em 1.2rem; }
     .prose ol li { margin: 0.3rem 0; }
@@ -27,8 +30,11 @@
   <main class="wrap">
     <a class="home-link" href="/">Henry Pan</a>
     <h1 class="title">Now</h1>
-    <!-- UPDATE this date every time the page changes -->
-    <span class="updated">Last updated June 16, 2026</span>
+    <div class="updated-group">
+      <!-- UPDATE this date every time the page changes -->
+      <span class="updated">Last updated June 16, 2026</span>
+      <span class="updated">inspired by Derek Sivers (<a href="https://sive.rs/now2" target="_blank" rel="noopener noreferrer">sive.rs/now2</a>)</span>
+    </div>
 
     <div class="prose">
       <h2>Work</h2>
