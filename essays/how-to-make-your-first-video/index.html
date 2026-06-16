@@ -4,177 +4,40 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="/favicon.png?v=4">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Three steps to actually pressing record: be confident, be shit, be honest.">
+  <meta name="description" content="How to make your first video — an essay by Henry Pan.">
   <title>how to make your first video — Henry Pan</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/theme.css?v=13">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+  <link rel="stylesheet" href="/assets/minimal.css?v=1">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-font-smoothing: antialiased; }
-
-    body {
-      background: var(--bg);
-      color: var(--fg);
-      font-family: var(--font-body);
-      font-size: clamp(1.05rem, 1.9vw, 1.18rem);
-      line-height: 1.72;
-      min-height: 100dvh;
-    }
-
-    .page {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: clamp(4rem, 9vw, 7rem) clamp(2rem, 6vw, 3rem) clamp(3rem, 8vw, 5rem);
-    }
-
-    .back {
-      display: inline-block;
-      font-size: 0.78rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--fg-dim);
-      text-decoration: none;
-      margin-bottom: clamp(2rem, 5vw, 3rem);
-      transition: color 0.15s ease, transform 0.2s ease;
-    }
-    .back:hover { color: var(--fg); transform: translateX(-2px); }
-
-    h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 5.5vw, 2.8rem);
-      font-weight: 500;
-      letter-spacing: 0.005em;
-      line-height: 1.1;
-      margin-bottom: 0.6rem;
-    }
-
-    .date {
-      font-size: 0.82rem;
-      color: var(--fg-dim);
-      letter-spacing: 0.08em;
-      margin-bottom: clamp(2rem, 5vw, 3rem);
-      display: block;
-    }
-
-    .essay h2 {
-      font-family: var(--font-display);
-      font-weight: 500;
-      font-size: clamp(1.3rem, 3vw, 1.55rem);
-      margin: 2.2rem 0 0.9rem;
-      color: var(--fg);
-    }
-    .essay p { margin-bottom: 1.25rem; color: var(--fg); }
-    .essay p + p { margin-top: 0; }
-    .essay blockquote {
-      margin: 1.8rem 0;
-      padding: 0.2rem 0 0.2rem 1.2rem;
-      border-left: 2px solid var(--border-strong);
-      color: var(--fg-mut);
-      font-style: italic;
-    }
-    .essay blockquote cite {
-      display: block;
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-      font-style: normal;
-      color: var(--fg-dim);
-      letter-spacing: 0.04em;
-    }
-    .essay a {
-      color: var(--fg);
-      text-decoration: underline;
-      text-decoration-color: var(--border-strong);
-      text-underline-offset: 3px;
-      transition: text-decoration-color 0.15s ease;
-    }
-    .essay a:hover { text-decoration-color: var(--fg); }
-
-    .end {
-      margin-top: clamp(3rem, 6vw, 4rem);
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.95rem;
-      color: var(--fg-mut);
-      font-style: italic;
-    }
-    .end a {
-      color: var(--fg);
-      font-style: normal;
-      text-decoration: underline;
-      text-decoration-color: var(--border-strong);
-      text-underline-offset: 3px;
-    }
-
-    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    .essay-date { display: block; color: var(--mut); font-size: 0.85rem; margin-bottom: 2.25rem; }
+    .prose h2 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin: 2rem 0 0.6rem; }
+    .essay-end { margin-top: 2.75rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); color: var(--mut); }
+    .essay-end a { color: var(--mut); }
+    .essay-end a:hover { color: var(--ink); }
   </style>
 </head>
 <body>
-    <div class="pack-frame">
-    <!-- Camel-pack stepped corners -->
-    <span class="pack-corner tl" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-    <span class="pack-corner tr" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-    <span class="pack-corner bl" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-    <span class="pack-corner br" aria-hidden="true"><svg viewBox="0 0 56 40" preserveAspectRatio="none"><rect class="cnr-navy" width="56" height="40"/><path class="cnr-cream" d="M 56 22 L 56 40 L 22 40 a 6 6 0 0 1 6 -6 L 36 34 a 6 6 0 0 1 6 -6 L 50 28 a 6 6 0 0 1 6 -6 Z"/></svg></span>
-
-  <main class="sheet">
-
-    <div class="est-badge">EST. MMVI</div>
-
-    <header class="cartouche">
-      <div class="cartouche-name"><a href="/">HENRY <span class="cartouche-dot"></span> PAN</a></div>
-      <nav class="cartouche-nav" aria-label="primary">
-        <a href="/essays" aria-current="page">essays</a>
-        <a href="/lindy-library">library</a>
-        <a href="/contact">contact</a>
-      </nav>
-    </header>
-
-    <article class="essay-page" style="max-width: 720px; margin: 0 auto; padding: 0 clamp(0.5rem, 2vw, 1.5rem);">
-    <a href="/essays" class="back">← all essays</a>
-
-    <h1>how to make your first video</h1>
-    <span class="date">Nov 13, 2025</span>
-
-    <article class="essay">
+  <main class="wrap">
+    <a class="home-link" href="/writings/">← Writings</a>
+    <h1 class="title">how to make your first video</h1>
+    <span class="essay-date">Nov 13, 2025</span>
+    <div class="prose">
       <p>So you want to make content. That's pretty cool. But I can only assume that since you are reading this document right now, you have no clue what you are doing.</p>
-
       <p>Don't worry, I didn't either.</p>
-
       <p>Here's exactly what you need to do:</p>
-
       <h2>Step 1: Be confident.</h2>
-
       <p>This sounds generic and stocky, and honestly it kinda is, but the reason I say this is because a very common barrier to content creation is the fear of being perceived. But isn't that what you want? To be perceived? You just don't want to be perceived as a loser, a loser with less than 10k followers who's making stupid videos on Instagram.</p>
-
       <p>News flash: every creator had no followers at a certain point. None of us started out magically with 10K on our profiles, we all had to grind to get there. But I understand that doesn't make the task of starting any less scary.</p>
-
       <p>So let me ask you this: do you believe you are going to be successful? If you don't, well, stop reading this and continue to scroll on Instagram accepting the fact that your life will amount to nothing. But if you do, then when you become successful, people are going to see you anyway. Why does it matter if they see you at the bottom or at the top or halfway there? All they can do is watch.</p>
-
       <h2>Step 2: Be shit.</h2>
-
       <p>Excuse my language. Even as a Christian, I feel like this is the most effective way to get my next point across. You need to be okay with being shit. Most people are either 0 or 100, they have to be all-in and perfect, or not at all. Successful people are in the middle, they are okay with being 1% as long as the next time they are 1.1%. Your first video is not going to be the next Godfather okay? It's probably going to get 268 views and 50 of them are going to be people you know who sent it to their group chats and all of them are laughing at you. That's okay though, because you're going to fix up some things. Maybe you change your hook, maybe you speak with a little bit more emotion, maybe you add some nice music. The next video will be better. That's all that matters. If the next video is always better, then your success is guaranteed. But you have to make the previous video for the next one to exist.</p>
-
       <h2>Step 3: Be honest.</h2>
-
       <p>Social media is fake. I don't think that comes as a surprise to anyone. In a world full of AI generated slop and edited IG baddie profiles, people yearn for real human connection. That's why personality streamers have exploded over the past few years. People just like seeing people now. No one really likes the know-it-all, the guru, the guy that has a nice car and a hot girlfriend. It's unattainable, it's unrealistic. But you can be the realistic one, you can show them that it is really possible to do the things you are about to do. Whatever content you make, don't hide your struggles or vulnerabilities, embrace them. It is the thing that makes you special.</p>
-
       <p>Alright those are the 3 steps to making your first video. If you came here looking for technical advice, I'm sorry to say that there's none here. It's not like I don't have it, it's just that you don't need it right now. The technical stuff can come after you start, just focus on actually doing that.</p>
-
-      <p>After you posted your first video, come back to this document and <a href="/contact">click this link</a>. It's a link to get in touch. Now I'm gonna be honest, I'm only looking to get on call with people that are willing to actually pay to work with me, but if you want your first video to be reviewed, you can shoot me a DM and I'll look at it for free.</p>
-    </article>
-
-    <div class="end">
-      Thanks for reading. <a href="/essays">More essays →</a>
+      <p>After you posted your first video, come back to this document and <a href="/contact/">click this link</a>. It's a link to get in touch. Now I'm gonna be honest, I'm only looking to get on call with people that are willing to actually pay to work with me, but if you want your first video to be reviewed, you can shoot me a DM and I'll look at it for free.</p>
     </div>
-      </article>
-    <div class="blend-band">PHILOSOPHY &amp; ECONOMICS BLEND</div>
+    <div class="essay-end">Thanks for reading. <a href="/writings/">More writings →</a></div>
   </main>
-  </div>
-
-  <footer class="colophon">
-    <div class="colophon-line">Set in Cormorant &amp; Garamond. Charlottesville, Virginia — MMXXVI.</div>
-  </footer>
 </body>
 </html>
