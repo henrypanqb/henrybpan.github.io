@@ -20,7 +20,7 @@
   <main class="wrap">
     <h1 class="title">Henry Pan</h1>
     <ul class="nav">
-      <li><a href="https://www.youtube.com/@henrybpan" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a id="yt-link" href="https://www.youtube.com/@henrybpan" target="_blank" rel="noopener noreferrer">YouTube</a></li>
       <li><a href="https://www.instagram.com/henrybpan" target="_blank" rel="noopener noreferrer">Instagram</a></li>
       <li><a href="/about/">About</a></li>
       <li><a href="/now/">Now</a></li>
@@ -32,5 +32,41 @@
       <li><a href="/contact/">Contact</a></li>
     </ul>
   </main>
+  <script>
+    // In Instagram/Facebook in-app browsers, a normal youtube.com link opens
+    // inside their webview instead of the YouTube app. Best-effort: when we
+    // detect an in-app browser, try the native app via deep link, falling back
+    // to the regular link. Desktop and normal mobile browsers are untouched.
+    (function () {
+      var link = document.getElementById('yt-link');
+      if (!link) return;
+      var ua = navigator.userAgent || '';
+      var inApp = /Instagram|FBAN|FBAV|FB_IAB|Line\/|Snapchat|Twitter|TikTok|musical_ly/i.test(ua);
+      if (!inApp) return; // universal links already open the app in normal browsers
+      var isIOS = /iPhone|iPad|iPod/i.test(ua);
+      var isAndroid = /Android/i.test(ua);
+      var CHANNEL = 'UCjUMsx6Vqgy9x0MWWzQ7FlA';
+      var web = link.href; // https://www.youtube.com/@henrybpan
+      link.addEventListener('click', function (e) {
+        if (isAndroid) {
+          e.preventDefault();
+          window.location.href =
+            'intent://www.youtube.com/channel/' + CHANNEL +
+            '#Intent;package=com.google.android.youtube;scheme=https;' +
+            'S.browser_fallback_url=' + encodeURIComponent(web) + ';end';
+        } else if (isIOS) {
+          e.preventDefault();
+          var fallback = setTimeout(function () { window.location.href = web; }, 1200);
+          // if the app opens, the page is hidden — cancel the web fallback
+          var cancel = function () { clearTimeout(fallback); };
+          window.addEventListener('pagehide', cancel, { once: true });
+          document.addEventListener('visibilitychange', function () {
+            if (document.hidden) cancel();
+          }, { once: true });
+          window.location.href = 'youtube://www.youtube.com/channel/' + CHANNEL;
+        }
+      });
+    }());
+  </script>
 </body>
 </html>
