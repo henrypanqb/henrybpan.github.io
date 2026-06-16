@@ -12,9 +12,11 @@
   <style>
     .essay-date { display: block; color: var(--mut); font-size: 0.85rem; margin-bottom: 2.25rem; }
     .prose h2 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin: 2rem 0 0.6rem; }
-    .essay-end { margin-top: 2.75rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); color: var(--mut); }
-    .essay-end a { color: var(--mut); }
-    .essay-end a:hover { color: var(--ink); }
+    .subscribe { margin-top: 3rem; padding-top: 1.6rem; border-top: 1px solid var(--rule); }
+    .subscribe-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mut); margin-bottom: 0.8rem; }
+    .subscribe-btn { display: inline-block; font-weight: 500; color: var(--paper); background: var(--ink); border: 1px solid var(--ink); padding: 0.55rem 1.2rem; text-decoration: none; transition: opacity 0.15s ease; }
+    .subscribe-btn:hover { opacity: 0.85; }
+    @media (prefers-reduced-motion: reduce) { .subscribe-btn { transition: none; } }
   </style>
 </head>
 <body>
@@ -37,7 +39,10 @@
       <p>Alright those are the 3 steps to making your first video. If you came here looking for technical advice, I'm sorry to say that there's none here. It's not like I don't have it, it's just that you don't need it right now. The technical stuff can come after you start, just focus on actually doing that.</p>
       <p>After you posted your first video, come back to this document and <a href="/contact/">click this link</a>. It's a link to get in touch. Now I'm gonna be honest, I'm only looking to get on call with people that are willing to actually pay to work with me, but if you want your first video to be reviewed, you can shoot me a DM and I'll look at it for free.</p>
     </div>
-    <div class="essay-end">Thanks for reading. <a href="/writings/">More writings →</a></div>
+    <div class="subscribe">
+      <p class="subscribe-label">Newsletter</p>
+      <a class="subscribe-btn" href="https://henrybpan.substack.com/subscribe" target="_blank" rel="noopener noreferrer">Subscribe on Substack →</a>
+    </div>
   </main>
 </body>
 </html>
