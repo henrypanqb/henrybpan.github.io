@@ -27,12 +27,24 @@
       margin: 0.9rem 0 1.7rem;
     }
 
+    /* CTAs on one horizontal line */
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 1.4rem; list-style: none; }
+    .hero-cta a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .hero-cta a:hover { border-color: var(--ink); }
+
     /* Hamburger toggle — fixed, aligned to the column's left edge */
     .menu-toggle {
       position: fixed;
       top: clamp(1.1rem, 3vw, 1.7rem);
       left: clamp(1.5rem, 6vw, 4rem);
-      z-index: 50;
+      z-index: 60;
       background: none;
       border: 0;
       padding: 0.35rem;
@@ -46,31 +58,25 @@
     .menu-toggle.is-open .icon-open { display: none; }
     .menu-toggle.is-open .icon-close { display: block; }
 
-    /* Dropdown menu panel */
-    .menu-panel {
+    /* Full-screen overlay menu */
+    .overlay {
       position: fixed;
-      top: clamp(3.4rem, 9vw, 4.6rem);
-      left: clamp(1.5rem, 6vw, 4rem);
-      z-index: 49;
-      min-width: 11rem;
+      inset: 0;
+      z-index: 50;
       background: var(--paper);
-      border: 1px solid var(--rule);
-      border-radius: 10px;
-      padding: 0.45rem 0.3rem;
-      box-shadow: 0 14px 36px -16px rgba(28, 28, 28, 0.35);
+      padding: clamp(5rem, 14vh, 8rem) clamp(1.5rem, 6vw, 4rem);
     }
-    .menu-panel[hidden] { display: none; }
-    .menu-panel ul { list-style: none; }
-    .menu-panel a {
-      display: block;
-      padding: 0.42rem 1rem;
+    .overlay[hidden] { display: none; }
+    .overlay ul { list-style: none; }
+    .overlay li { margin: 0.35rem 0; }
+    .overlay a {
       color: var(--ink);
       text-decoration: none;
-      font-weight: 500;
-      font-size: 1.02rem;
-      border-radius: 6px;
+      font-weight: 600;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      letter-spacing: -0.01em;
     }
-    .menu-panel a:hover { color: var(--mut); }
+    .overlay a:hover { color: var(--mut); }
 
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   </style>
@@ -81,7 +87,7 @@
     <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
   </button>
 
-  <nav class="menu-panel" id="menu" aria-label="Site menu" hidden>
+  <nav class="overlay" id="menu" aria-label="Site menu" hidden>
     <ul>
       <li><a href="/about/">About</a></li>
       <li><a href="/now/">Now</a></li>
@@ -96,7 +102,7 @@
   <main class="wrap home">
     <h1 class="title">Henry Pan</h1>
     <p class="hero-tagline">work at everything with all your heart, as working for the Lord and not human masters.</p>
-    <ul class="nav">
+    <ul class="hero-cta">
       <li><a href="https://www.instagram.com/henrybpan" target="_blank" rel="noopener noreferrer">Instagram</a></li>
       <li><a id="yt-link" href="https://www.youtube.com/@henrybpan" target="_blank" rel="noopener noreferrer">YouTube</a></li>
       <li><a href="/writings/">Essays</a></li>
@@ -104,17 +110,14 @@
   </main>
 
   <script>
-    // Hamburger menu toggle.
+    // Full-screen overlay menu toggle.
     (function () {
       var btn = document.getElementById('menuToggle');
       var menu = document.getElementById('menu');
       if (!btn || !menu) return;
       function open() { menu.hidden = false; btn.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true'); btn.setAttribute('aria-label', 'Close menu'); }
       function close() { menu.hidden = true; btn.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-label', 'Open menu'); }
-      btn.addEventListener('click', function (e) { e.stopPropagation(); if (menu.hidden) open(); else close(); });
-      document.addEventListener('click', function (e) {
-        if (!menu.hidden && !menu.contains(e.target) && !btn.contains(e.target)) close();
-      });
+      btn.addEventListener('click', function () { if (menu.hidden) open(); else close(); });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && !menu.hidden) { close(); btn.focus(); }
       });
