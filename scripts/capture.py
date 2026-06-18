@@ -96,7 +96,53 @@ def add_devo():
     save("devotionals.json", items)
 
 
-ACTIONS = {"quote": add_quote, "thought": add_thought, "devo": add_devo}
+LIBRARY_MEDIA = ["Book", "Movie", "TV show", "Podcast", "Essay"]
+LIBRARY_STATUS = ["Reading", "To read", "Read", "To watch", "Watched"]
+
+
+def pick(label, options, allow_blank=False):
+    print(label + (" (or press enter for none)" if allow_blank else "") + ":")
+    for i, opt in enumerate(options, 1):
+        print(f"  {i}) {opt}")
+    raw = ask("> ")
+    if not raw and allow_blank:
+        return ""
+    if raw.isdigit() and 1 <= int(raw) <= len(options):
+        return options[int(raw) - 1]
+    for opt in options:
+        if raw.lower() == opt.lower():
+            return opt
+    return raw
+
+
+def add_library():
+    title = ask("Title: ")
+    if not title:
+        print("Empty title — nothing added.")
+        return
+    author = ask("Author / creator: ")
+    medium = pick("Category", LIBRARY_MEDIA)
+    status = pick("Read tag", LIBRARY_STATUS, allow_blank=True)
+    lindy = ask("Lindy / all-time favorite? (y/N): ").lower().startswith("y")
+    url = ask("Link (optional): ")
+    items = load("library.json")
+    items.append({
+        "title": title,
+        "author": author,
+        "medium": medium,
+        "status": status,
+        "lindy": lindy,
+        "url": url,
+    })
+    save("library.json", items)
+
+
+ACTIONS = {
+    "quote": add_quote,
+    "thought": add_thought,
+    "devo": add_devo,
+    "library": add_library,
+}
 
 
 def main():
@@ -106,7 +152,8 @@ def main():
         print("  1) quote")
         print("  2) thought")
         print("  3) devo")
-        menu = {"1": "quote", "2": "thought", "3": "devo"}
+        print("  4) library")
+        menu = {"1": "quote", "2": "thought", "3": "devo", "4": "library"}
         raw = ask("> ").lower()
         choice = menu.get(raw, raw if raw in ACTIONS else None)
     if choice not in ACTIONS:

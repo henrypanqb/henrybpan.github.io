@@ -56,3 +56,33 @@ content:
       - name: body
         label: Devotional
         type: text
+
+  - name: library
+    label: Library
+    type: file
+    path: assets/data/library.json
+    format: json
+    list: true
+    fields:
+      - name: title
+        label: Title
+        type: string
+      - name: author
+        label: Author / creator
+        type: string
+      - name: medium
+        label: Category
+        type: select
+        options:
+          values: [Book, Movie, TV show, Podcast, Essay]
+      - name: status
+        label: Read tag (optional)
+        type: select
+        options:
+          values: [Reading, To read, Read, To watch, Watched]
+      - name: lindy
+        label: Lindy — all-time favorite
+        type: boolean
+      - name: url
+        label: Link (optional, for online essays)
+        type: string
