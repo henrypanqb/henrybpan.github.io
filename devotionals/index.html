@@ -44,6 +44,13 @@
     .devo-body { line-height: 1.7; }
     .devo-body p { margin: 0 0 1em; }
     .devo-body p:last-child { margin-bottom: 0; }
+    .devo-body blockquote {
+      margin: 0 0 1em;
+      padding: 0.6em 1em;
+      border-left: 3px solid var(--rule);
+      color: var(--mut);
+      font-style: italic;
+    }
     .devo-empty { color: var(--mut); }
 
     @media (max-width: 720px) {
@@ -154,6 +161,14 @@
         });
       }
 
+      function inlineMarkdown(text) {
+        return text
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.+?)\*/g, '<em>$1</em>')
+          .replace(/_(.+?)_/g, '<em>$1</em>');
+      }
+
       function showDevo(id) {
         var d = devos.filter(function (x) { return x._id === id; })[0];
         if (!d) return;
@@ -173,7 +188,16 @@
         var body = document.createElement('div');
         body.className = 'devo-body';
         String(d.body).split(/\n\n+/).forEach(function (para) {
-          var p = document.createElement('p'); p.textContent = para; body.appendChild(p);
+          var trimmed = para.trim();
+          var el;
+          if (trimmed.startsWith('> ') || trimmed.startsWith('>')) {
+            el = document.createElement('blockquote');
+            el.innerHTML = inlineMarkdown(trimmed.replace(/^>\s?/gm, ''));
+          } else {
+            el = document.createElement('p');
+            el.innerHTML = inlineMarkdown(trimmed);
+          }
+          body.appendChild(el);
         });
         reader.appendChild(body);
         buildNav(id);
