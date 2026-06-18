@@ -81,14 +81,15 @@ def add_thought():
 
 
 def add_devo():
+    book = ask("Book (e.g. John): ")
+    scope = ask("Chapter/verse (e.g. 3:16, 1-3, or blank for whole book): ")
     title = ask("Title (optional): ")
-    passage = ask("Passage (e.g. John 3:16): ")
     version = ask("Version [ESV]: ") or "ESV"
     body = ask_multiline("Devotional")
     if not body:
         print("Empty devotional — nothing added.")
         return
-    entry = {"date": today(), "passage": passage, "version": version, "body": body}
+    entry = {"date": today(), "book": book, "scope": scope, "version": version, "body": body}
     if title:
         entry["title"] = title
     items = load("devotionals.json")

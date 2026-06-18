@@ -4,30 +4,66 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="/favicon.png?v=4">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Devotionals by Henry Pan.">
+  <meta name="description" content="Devotionals by Henry Pan, organized by book of the Bible.">
   <title>devotionals — Henry Pan</title>
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
   <link rel="stylesheet" href="/assets/minimal.css?v=1">
   <style>
-    .devotionals { list-style: none; }
-    .devotionals li { margin: 0 0 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--rule); }
-    .devotionals li:last-child { border-bottom: 0; }
+    .devo-wrap { max-width: 1000px; margin: 0 auto; padding: clamp(2.5rem, 7vh, 4.5rem) clamp(1.25rem, 5vw, 2.5rem) 4rem; }
+    .home-link { display: inline-block; color: var(--mut); text-decoration: none; font-weight: 500; margin-bottom: 1.6rem; }
+    .home-link:hover { color: var(--ink); }
+    .devo-head { margin-bottom: 2rem; }
+
+    .devo-layout { display: grid; grid-template-columns: minmax(170px, 220px) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+
+    /* ---- Sidebar glossary tree ---- */
+    .devo-nav { position: sticky; top: 1.5rem; align-self: start; font-size: 0.95rem; }
+    .devo-nav .book { border-bottom: 1px solid var(--rule); }
+    .devo-nav .book > summary {
+      cursor: pointer; list-style: none; padding: 0.5rem 0;
+      font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 0.5rem;
+    }
+    .devo-nav .book > summary::-webkit-details-marker { display: none; }
+    .devo-nav .book > summary::before {
+      content: '›'; color: var(--mut); transition: transform 0.15s ease; display: inline-block;
+    }
+    .devo-nav .book[open] > summary::before { transform: rotate(90deg); }
+    .chapter-group { padding: 0.1rem 0 0.5rem 1rem; }
+    .chapter-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mut); margin: 0.5rem 0 0.25rem; }
+    .devo-link { display: block; color: var(--mut); text-decoration: none; padding: 0.2rem 0; line-height: 1.35; }
+    .devo-link:hover { color: var(--ink); }
+    .devo-link.active { color: var(--ink); font-weight: 600; }
+
+    /* ---- Reading pane ---- */
+    .devo-reader { max-width: 640px; }
     .devo-date { display: block; color: var(--mut); font-size: 0.8rem; letter-spacing: 0.03em; margin-bottom: 0.4rem; }
-    .devo-title { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.35rem; }
-    .devo-passage { display: inline-block; margin-bottom: 0.8rem; color: var(--mut); font-size: 0.9rem; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+    .devo-title { font-size: clamp(1.5rem, 3.5vw, 2rem); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.35rem; }
+    .devo-passage { display: inline-block; margin-bottom: 1.4rem; color: var(--mut); font-size: 0.95rem; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
     .devo-passage:hover { color: var(--ink); text-decoration-color: var(--ink); }
-    .devo-body { line-height: 1.6; }
-    .devo-body p { margin: 0 0 0.8em; }
+    .devo-body { line-height: 1.7; }
+    .devo-body p { margin: 0 0 1em; }
     .devo-body p:last-child { margin-bottom: 0; }
+    .devo-empty { color: var(--mut); }
+
+    @media (max-width: 720px) {
+      .devo-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .devo-nav { position: static; border-bottom: 1px solid var(--rule); padding-bottom: 0.5rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { .devo-nav .book > summary::before { transition: none; } }
   </style>
 </head>
 <body>
-  <main class="wrap">
+  <div class="devo-wrap">
     <a class="home-link" href="/">Henry Pan</a>
-    <h1 class="title">Devotionals</h1>
-    <ul class="devotionals" id="devotionals"></ul>
-  </main>
+    <div class="devo-head"><h1 class="title">Devotionals</h1></div>
+
+    <div class="devo-layout">
+      <nav class="devo-nav" id="devo-nav" aria-label="Books"></nav>
+      <article class="devo-reader" id="devo-reader"></article>
+    </div>
+  </div>
+
   <script>
     var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     function fmtDate(iso) {
@@ -35,49 +71,127 @@
       if (p.length !== 3) return iso;
       return MONTHS[(+p[1]) - 1] + ' ' + (+p[2]) + ', ' + p[0];
     }
-    function bibleGatewayUrl(passage, version) {
+    function dash(s) { return String(s).replace(/-/g, '–'); }
+    function displayRef(d) { return d.book + (d.scope ? ' ' + dash(d.scope) : ''); }
+    function leafLabel(d) { return d.title ? d.title : (d.scope ? dash(d.scope) : 'Overview'); }
+    function bibleGatewayUrl(d) {
+      var ref = d.book + (d.scope ? ' ' + d.scope : '');
       return 'https://www.biblegateway.com/passage/?search=' +
-        encodeURIComponent(passage) + '&version=' + encodeURIComponent(version || 'ESV');
+        encodeURIComponent(ref) + '&version=' + encodeURIComponent(d.version || 'ESV');
     }
-    fetch('/assets/data/devotionals.json').then(function (r) { return r.json(); }).then(function (items) {
-      items.sort(function (a, b) { return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); });
-      var ul = document.getElementById('devotionals');
-      items.forEach(function (d) {
-        var li = document.createElement('li');
+    // scope -> chapter key (int; -1 = whole-book "Overview")
+    function chapterKey(scope) {
+      if (!scope) return -1;
+      var chap = String(scope).split(':')[0];      // before verse
+      var start = parseInt(chap, 10);              // first chapter of any range
+      return isNaN(start) ? 0 : start;
+    }
+    function chapterTitle(key) { return key < 0 ? 'Overview' : 'Chapter ' + key; }
 
+    Promise.all([
+      fetch('/assets/data/devotionals.json').then(function (r) { return r.json(); }),
+      fetch('/assets/data/bible-books.json').then(function (r) { return r.json(); })
+    ]).then(function (res) {
+      var devos = res[0] || [];
+      var ORDER = res[1] || [];
+      var nav = document.getElementById('devo-nav');
+      var reader = document.getElementById('devo-reader');
+
+      if (!devos.length) {
+        reader.innerHTML = '<p class="devo-empty">No devotionals yet.</p>';
+        return;
+      }
+
+      // give each devo a stable id
+      devos.forEach(function (d, i) { d._id = 'd' + i; });
+
+      function bookIndex(b) { var i = ORDER.indexOf(b); return i < 0 ? 999 : i; }
+
+      // group: book -> chapterKey -> [devos]
+      var books = {};
+      devos.forEach(function (d) {
+        (books[d.book] = books[d.book] || []).push(d);
+      });
+      var bookNames = Object.keys(books).sort(function (a, b) { return bookIndex(a) - bookIndex(b); });
+
+      function buildNav(activeId) {
+        nav.innerHTML = '';
+        bookNames.forEach(function (book) {
+          var items = books[book].slice();
+          var hasActive = items.some(function (d) { return d._id === activeId; });
+          var det = document.createElement('details');
+          det.className = 'book';
+          if (hasActive) det.open = true;
+          var sum = document.createElement('summary');
+          sum.textContent = book;
+          det.appendChild(sum);
+
+          // group by chapter key, sorted (Overview first)
+          var groups = {};
+          items.forEach(function (d) {
+            var k = chapterKey(d.scope);
+            (groups[k] = groups[k] || []).push(d);
+          });
+          Object.keys(groups).map(Number).sort(function (a, b) { return a - b; }).forEach(function (k) {
+            var g = document.createElement('div');
+            g.className = 'chapter-group';
+            var lbl = document.createElement('p');
+            lbl.className = 'chapter-label';
+            lbl.textContent = chapterTitle(k);
+            g.appendChild(lbl);
+            groups[k].forEach(function (d) {
+              var a = document.createElement('a');
+              a.className = 'devo-link' + (d._id === activeId ? ' active' : '');
+              a.href = '#' + d._id;
+              a.dataset.id = d._id;
+              a.textContent = leafLabel(d);
+              a.addEventListener('click', function (e) { e.preventDefault(); location.hash = d._id; });
+              g.appendChild(a);
+            });
+            det.appendChild(g);
+          });
+          nav.appendChild(det);
+        });
+      }
+
+      function showDevo(id) {
+        var d = devos.filter(function (x) { return x._id === id; })[0];
+        if (!d) return;
+        reader.innerHTML = '';
         var date = document.createElement('span');
-        date.className = 'devo-date';
-        date.textContent = fmtDate(d.date);
-        li.appendChild(date);
-
+        date.className = 'devo-date'; date.textContent = fmtDate(d.date);
+        reader.appendChild(date);
         if (d.title) {
           var h = document.createElement('h2');
-          h.className = 'devo-title';
-          h.textContent = d.title;
-          li.appendChild(h);
+          h.className = 'devo-title'; h.textContent = d.title;
+          reader.appendChild(h);
         }
-
-        if (d.passage) {
-          var a = document.createElement('a');
-          a.className = 'devo-passage';
-          a.href = bibleGatewayUrl(d.passage, d.version);
-          a.target = '_blank';
-          a.rel = 'noopener noreferrer';
-          a.textContent = d.passage;
-          li.appendChild(a);
-        }
-
+        var a = document.createElement('a');
+        a.className = 'devo-passage'; a.href = bibleGatewayUrl(d);
+        a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = displayRef(d);
+        reader.appendChild(a);
         var body = document.createElement('div');
         body.className = 'devo-body';
         String(d.body).split(/\n\n+/).forEach(function (para) {
-          var p = document.createElement('p');
-          p.textContent = para;
-          body.appendChild(p);
+          var p = document.createElement('p'); p.textContent = para; body.appendChild(p);
         });
-        li.appendChild(body);
+        reader.appendChild(body);
+        buildNav(id);
+        if (window.matchMedia('(max-width: 720px)').matches) {
+          reader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
 
-        ul.appendChild(li);
-      });
+      function current() {
+        var h = location.hash.replace('#', '');
+        if (h && devos.some(function (d) { return d._id === h; })) return h;
+        // default: most recent by date
+        var sorted = devos.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+        return sorted[0]._id;
+      }
+
+      window.addEventListener('hashchange', function () { showDevo(current()); });
+      showDevo(current());
     }).catch(function () {});
   </script>
 </body>
