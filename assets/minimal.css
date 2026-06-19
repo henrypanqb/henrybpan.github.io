@@ -28,9 +28,8 @@ body {
 
 .wrap {
   max-width: 640px;
-  margin: 0;
-  padding: clamp(3rem, 9vh, 6rem) clamp(1.25rem, 5vw, 2rem) 4rem
-           clamp(1.5rem, 6vw, 4rem);
+  margin: 0 auto;
+  padding: clamp(3rem, 9vh, 6rem) clamp(1.25rem, 5vw, 2rem) 4rem;
 }
 
 /* Page heading (name / page title) */
