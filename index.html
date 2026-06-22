@@ -50,6 +50,63 @@
     .linkrow.secondary a { font-size: clamp(0.95rem, 1.4vw, 1.05rem); color: var(--mut); }
     .linkrow.secondary a:hover { color: var(--ink); border-color: var(--ink); }
 
+    .newsletter-block {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+      max-width: 480px;
+    }
+    .newsletter-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mut);
+      margin-bottom: 0.35rem;
+    }
+    .newsletter-blurb {
+      font-size: clamp(0.9rem, 1.3vw, 0.98rem);
+      color: var(--mut);
+      margin-bottom: 0.85rem;
+    }
+    .newsletter-blurb a {
+      color: var(--mut);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .newsletter-blurb a:hover { color: var(--ink); }
+    .newsletter-form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .newsletter-form input[type="email"] {
+      flex: 1 1 200px;
+      font-family: var(--font);
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 0;
+      padding: 0.5rem 0.65rem;
+      transition: border-color 0.15s ease;
+      min-width: 0;
+    }
+    .newsletter-form input[type="email"]:focus { outline: none; border-color: var(--ink); }
+    .newsletter-form button {
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--paper);
+      background: var(--ink);
+      border: 1px solid var(--ink);
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.15s ease;
+    }
+    .newsletter-form button:hover:not(:disabled) { opacity: 0.85; }
+    .newsletter-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .newsletter-status { margin-top: 0.55rem; font-size: 0.85rem; color: var(--mut); min-height: 1.1em; }
+    .newsletter-status.ok { color: #3f6f4a; }
+    .newsletter-status.err { color: #a8443a; }
+
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   </style>
 </head>
@@ -72,7 +129,56 @@
       <li><a href="/thoughts/">Thoughts</a></li>
       <li><a href="/contact/">Contact</a></li>
     </ul>
+
+    <div class="newsletter-block">
+      <p class="newsletter-label">Newsletter</p>
+      <p class="newsletter-blurb">Notes from my life. <a href="/newsletter/">More info →</a></p>
+      <form class="newsletter-form" id="home-signup" action="https://formspree.io/f/xaqgyvae" method="POST">
+        <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" aria-label="Email address">
+        <button type="submit">Subscribe</button>
+      </form>
+      <p class="newsletter-status" id="home-status" role="status" aria-live="polite"></p>
+    </div>
   </main>
+
+  <script>
+    (function () {
+      var form   = document.getElementById('home-signup');
+      var status = document.getElementById('home-status');
+      var btn    = form.querySelector('button');
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var email = form.querySelector('input[type="email"]').value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          status.className = 'newsletter-status err';
+          status.textContent = 'Please enter a valid email address.';
+          return;
+        }
+        btn.disabled = true;
+        status.className = 'newsletter-status';
+        status.textContent = 'Subscribing…';
+        try {
+          var res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+          if (res.ok) {
+            form.reset();
+            btn.disabled = false;
+            status.className = 'newsletter-status ok';
+            status.textContent = 'You\'re on the list. Talk soon.';
+          } else {
+            var data = await res.json().catch(function () { return {}; });
+            btn.disabled = false;
+            status.className = 'newsletter-status err';
+            status.textContent = (data && data.error) || 'Something went wrong. Try again.';
+          }
+        } catch (err) {
+          btn.disabled = false;
+          status.className = 'newsletter-status err';
+          status.textContent = 'Network error. Try again.';
+        }
+      });
+    }());
+  </script>
 
   <script>
     // In Instagram/Facebook in-app browsers, a normal youtube.com link opens
