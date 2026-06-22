@@ -162,5 +162,12 @@
     "medium": "Movie",
     "status": "Watched",
     "lindy": false
+  },
+  {
+    "title": "My Goal Alignment Problem",
+    "author": "Bryan Johnson",
+    "medium": "Essay",
+    "lindy": false,
+    "url": "https://medium.com/future-literacy/my-goal-alignment-problem-d90e0c14b717"
   }
 ]
