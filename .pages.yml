@@ -1,6 +1,6 @@
 # Pages CMS config — https://pagescms.org
-# In-browser editing for Quotes / Thoughts / Devotionals.
-# Each file is a top-level JSON array (list: true); the /quotes, /thoughts and
+# In-browser editing for Quotes / Ideas / Devotionals.
+# Each file is a top-level JSON array (list: true); the /quotes, /ideas and
 # /devotionals pages fetch these same files and render them. Saving in the CMS
 # commits to this repo, GitHub Pages redeploys, and the change goes live.
 
@@ -18,20 +18,6 @@ content:
       - name: author
         label: Author
         type: string
-
-  - name: thoughts
-    label: Thoughts
-    type: file
-    path: assets/data/thoughts.json
-    format: json
-    list: true
-    fields:
-      - name: date
-        label: Date
-        type: date
-      - name: body
-        label: Thought
-        type: text
 
   - name: devotionals
     label: Devotionals
