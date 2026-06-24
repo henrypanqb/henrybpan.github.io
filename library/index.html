@@ -64,6 +64,46 @@
     .item:hover .row-title { color: #b06a43; }
     .list a:hover .row-title { border-color: #c98968; }
 
+    /* ---- Notes toggle + panel ---- */
+    .item-header { display: flex; align-items: flex-start; gap: 0.5rem; }
+    .item-header > a,
+    .item-header > .row { flex: 1; min-width: 0; }
+    .notes-btn {
+      flex-shrink: 0;
+      align-self: center;
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      padding: 0.06rem 0.5rem;
+      font-family: var(--font);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--mut);
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    .notes-btn:hover, .notes-btn.is-open { border-color: var(--ink); color: var(--ink); }
+    .notes-panel {
+      margin-top: 0.55rem;
+      padding-left: 0.05rem;
+      font-size: 0.9em;
+      color: var(--mut);
+      line-height: 1.65;
+    }
+    .notes-panel[hidden] { display: none; }
+    .notes-text { margin-bottom: 0.4rem; white-space: pre-line; }
+    .notes-link {
+      display: inline-block;
+      color: var(--mut);
+      font-size: 0.85em;
+      text-decoration: underline;
+      text-decoration-color: var(--rule);
+      text-underline-offset: 2px;
+    }
+    .notes-link:hover { color: var(--ink); text-decoration-color: var(--ink); }
+
     @media (prefers-reduced-motion: reduce) {
       .chip { transition: none; }
       .item, .lib-section .section-label { animation: none; }
@@ -179,7 +219,51 @@
           li.dataset.lindy = it.lindy ? 'true' : 'false';
           li.dataset.title = it.title;
           li.dataset.order = i;
-          li.appendChild(makeRow(it));
+
+          var hasNotes = (it.notes && it.notes.trim()) || (it.notes_url && it.notes_url.trim());
+          if (hasNotes) {
+            var header = document.createElement('div');
+            header.className = 'item-header';
+            header.appendChild(makeRow(it));
+
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'notes-btn';
+            btn.textContent = 'notes';
+            btn.setAttribute('aria-expanded', 'false');
+            header.appendChild(btn);
+            li.appendChild(header);
+
+            var panel = document.createElement('div');
+            panel.className = 'notes-panel';
+            panel.hidden = true;
+            if (it.notes && it.notes.trim()) {
+              var p = document.createElement('p');
+              p.className = 'notes-text';
+              p.textContent = it.notes;
+              panel.appendChild(p);
+            }
+            if (it.notes_url && it.notes_url.trim()) {
+              var lnk = document.createElement('a');
+              lnk.className = 'notes-link';
+              lnk.href = it.notes_url;
+              lnk.target = '_blank';
+              lnk.rel = 'noopener noreferrer';
+              lnk.textContent = 'Read full review →';
+              panel.appendChild(lnk);
+            }
+            li.appendChild(panel);
+
+            btn.addEventListener('click', function () {
+              var open = !panel.hidden;
+              panel.hidden = open;
+              btn.setAttribute('aria-expanded', String(!open));
+              btn.classList.toggle('is-open', !open);
+            });
+          } else {
+            li.appendChild(makeRow(it));
+          }
+
           ul.appendChild(li);
         });
         section.appendChild(ul);

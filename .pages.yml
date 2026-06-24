@@ -157,3 +157,26 @@ content:
       - name: url
         label: Link (optional, for online essays)
         type: string
+      - name: notes
+        label: Notes / commentary (optional)
+        type: text
+      - name: notes_url
+        label: Full review link (optional)
+        type: string
+
+  - name: ideas
+    label: Ideas
+    type: file
+    path: assets/data/ideas.json
+    format: json
+    list: true
+    fields:
+      - name: title
+        label: Title (the hook)
+        type: string
+      - name: body
+        label: Body
+        type: text
+      - name: tag
+        label: Tag
+        type: string

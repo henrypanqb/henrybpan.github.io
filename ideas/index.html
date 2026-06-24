@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="/favicon.png?v=4">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Henry Pan's ideas — running thoughts on faith, creativity, content, and life.">
+  <title>ideas — Henry Pan</title>
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+  <link rel="stylesheet" href="/assets/minimal.css?v=1">
+  <style>
+    /* ---- Controls ---- */
+    .ideas-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 2.5rem;
+    }
+    .chip {
+      font-family: var(--font);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--mut);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      padding: 0.28rem 0.72rem;
+      cursor: pointer;
+      transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .chip:hover { color: var(--ink); border-color: var(--ink); }
+    .chip.is-active { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+
+    /* ---- Grid ---- */
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    @media (max-width: 480px) {
+      .ideas-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---- Card ---- */
+    .idea-card {
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      transition: border-color 0.15s ease;
+    }
+    .idea-card:hover { border-color: var(--ink); }
+    .idea-card.is-hidden { display: none; }
+
+    .idea-title {
+      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+    .idea-body {
+      font-size: 0.88rem;
+      color: var(--mut);
+      line-height: 1.65;
+      flex: 1;
+    }
+    .idea-tag {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--mut);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      padding: 0.06rem 0.5rem;
+      align-self: flex-start;
+    }
+
+    /* ---- Empty state ---- */
+    .empty {
+      grid-column: 1 / -1;
+      color: var(--mut);
+      font-size: 0.9rem;
+      padding: 1rem 0;
+    }
+
+    /* ---- Rise-in ---- */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .idea-card { animation: riseIn 0.4s cubic-bezier(0.2, 0.65, 0.3, 1) both; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chip { transition: none; }
+      .idea-card { animation: none; transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a class="home-link" href="/">Henry Pan</a>
+    <h1 class="title">Ideas</h1>
+
+    <div class="ideas-controls" id="filters" role="group" aria-label="Filter by category"></div>
+
+    <div class="ideas-grid" id="grid"></div>
+  </main>
+
+  <script>
+    fetch('/assets/data/ideas.json').then(function (r) { return r.json(); }).then(function (ideas) {
+      var grid = document.getElementById('grid');
+      var filtersEl = document.getElementById('filters');
+
+      if (!ideas.length) {
+        var empty = document.createElement('p');
+        empty.className = 'empty';
+        empty.textContent = 'Nothing here yet.';
+        grid.appendChild(empty);
+        return;
+      }
+
+      // collect unique tags in appearance order
+      var tags = [];
+      ideas.forEach(function (idea) {
+        var t = (idea.tag || '').trim();
+        if (t && tags.indexOf(t) === -1) tags.push(t);
+      });
+
+      // build filter chips
+      var current = 'all';
+      var allChip = makeChip('All', 'all', true);
+      filtersEl.appendChild(allChip);
+      tags.forEach(function (t) { filtersEl.appendChild(makeChip(t, t, false)); });
+
+      // build cards
+      ideas.forEach(function (idea, i) {
+        var card = document.createElement('div');
+        card.className = 'idea-card';
+        card.dataset.tag = (idea.tag || '').trim();
+        card.style.animationDelay = Math.min(i * 30, 480) + 'ms';
+
+        var title = document.createElement('p');
+        title.className = 'idea-title';
+        title.textContent = idea.title;
+        card.appendChild(title);
+
+        if (idea.body && idea.body.trim()) {
+          var body = document.createElement('p');
+          body.className = 'idea-body';
+          body.textContent = idea.body;
+          card.appendChild(body);
+        }
+
+        if (idea.tag) {
+          var tag = document.createElement('span');
+          tag.className = 'idea-tag';
+          tag.textContent = idea.tag;
+          card.appendChild(tag);
+        }
+
+        grid.appendChild(card);
+      });
+
+      function applyFilter() {
+        var cards = grid.querySelectorAll('.idea-card');
+        cards.forEach(function (card) {
+          var show = current === 'all' || card.dataset.tag === current;
+          card.classList.toggle('is-hidden', !show);
+        });
+      }
+
+      function makeChip(label, value, active) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chip' + (active ? ' is-active' : '');
+        btn.textContent = label;
+        btn.dataset.filter = value;
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        btn.addEventListener('click', function () {
+          current = value;
+          filtersEl.querySelectorAll('.chip').forEach(function (c) {
+            var on = c === btn;
+            c.classList.toggle('is-active', on);
+            c.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+          applyFilter();
+        });
+        return btn;
+      }
+
+      applyFilter();
+    }).catch(function () {});
+  </script>
+</body>
+</html>
