@@ -10,193 +10,370 @@
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
   <link rel="stylesheet" href="/assets/minimal.css?v=1">
   <style>
-    /* ---- Controls ---- */
-    .ideas-controls {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.45rem;
-      margin-bottom: 2.5rem;
+    /* Widen the page beyond the default 640px column for the sidebar layout */
+    .ideas-wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: clamp(3rem, 9vh, 6rem) clamp(1.25rem, 5vw, 2rem) 4rem;
     }
-    .chip {
-      font-family: var(--font);
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      color: var(--mut);
-      background: transparent;
-      border: 1px solid var(--rule);
-      border-radius: 999px;
-      padding: 0.28rem 0.72rem;
-      cursor: pointer;
-      transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-    }
-    .chip:hover { color: var(--ink); border-color: var(--ink); }
-    .chip.is-active { color: var(--paper); background: var(--ink); border-color: var(--ink); }
 
-    /* ---- Grid ---- */
-    .ideas-grid {
+    /* ============================================================
+       LIST VIEW — sticky sidebar + grouped title lists
+    ============================================================ */
+    .ideas-layout {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
-    }
-    @media (max-width: 480px) {
-      .ideas-grid { grid-template-columns: 1fr; }
+      grid-template-columns: 200px 1fr;
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: start;
     }
 
-    /* ---- Card ---- */
-    .idea-card {
-      background: transparent;
-      border: 1px solid var(--rule);
-      border-radius: 10px;
-      padding: 1.1rem 1.2rem 1.15rem;
+    .ideas-nav {
+      position: sticky;
+      top: clamp(2rem, 9vh, 5rem);
+      list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
-      transition: border-color 0.15s ease;
+      gap: 0.6rem;
     }
-    .idea-card:hover { border-color: var(--ink); }
-    .idea-card.is-hidden { display: none; }
+    .ideas-nav a {
+      color: var(--mut);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      line-height: 1.3;
+      transition: color 0.15s ease;
+      cursor: pointer;
+    }
+    .ideas-nav a:hover { color: var(--ink); }
+    .ideas-nav a.is-active { color: var(--ink); font-weight: 600; }
 
-    .idea-title {
-      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
-      font-weight: 700;
-      line-height: 1.4;
-      color: var(--ink);
-    }
-    .idea-body {
-      font-size: 0.88rem;
-      color: var(--mut);
-      line-height: 1.65;
-      flex: 1;
-    }
-    .idea-tag {
+    .ideas-main { min-width: 0; }
+
+    .idea-section { margin: 0 0 2.75rem; }
+    .idea-section:last-child { margin-bottom: 0; }
+    .idea-section .section-label { margin-bottom: 1rem; }
+
+    .idea-list { list-style: none; }
+    .idea-list li { margin: 0 0 0.85rem; }
+    .idea-link {
       display: inline-block;
-      font-size: 0.6rem;
+      font-size: clamp(1.05rem, 1.5vw, 1.2rem);
       font-weight: 600;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      color: var(--mut);
+      line-height: 1.3;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s ease;
+      cursor: pointer;
+    }
+    .idea-link:hover { border-color: var(--ink); }
+
+    /* ============================================================
+       DETAIL VIEW — body in a card, title at the bottom
+    ============================================================ */
+    .detail-wrap { max-width: 640px; margin: 0 auto; }
+
+    .detail-card {
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .detail-body {
+      padding: clamp(1.3rem, 3vw, 1.9rem);
+      font-size: 0.96rem;
+      color: var(--ink);
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+    .detail-footer {
+      border-top: 1px solid var(--rule);
+      padding: 1.1rem clamp(1.3rem, 3vw, 1.9rem);
+    }
+    .detail-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink);
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 1px;
+    }
+
+    .browse {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-top: 1.1rem;
       border: 1px solid var(--rule);
       border-radius: 999px;
-      padding: 0.06rem 0.5rem;
-      align-self: flex-start;
+      padding: 0.4rem 0.85rem;
     }
+    .browse button {
+      background: none;
+      border: 0;
+      color: var(--mut);
+      font-family: var(--font);
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.15s ease;
+    }
+    .browse button:hover:not(:disabled) { color: var(--ink); }
+    .browse button:disabled { opacity: 0.3; cursor: default; }
+    .browse span { font-size: 0.85rem; color: var(--mut); }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 1.6rem;
+      color: var(--mut);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+    .back-link:hover { color: var(--ink); }
 
     /* ---- Empty state ---- */
-    .empty {
-      grid-column: 1 / -1;
-      color: var(--mut);
-      font-size: 0.9rem;
-      padding: 1rem 0;
-    }
+    .empty { color: var(--mut); font-size: 0.9rem; padding: 1rem 0; }
 
     /* ---- Rise-in ---- */
     @keyframes riseIn {
       from { opacity: 0; transform: translateY(6px); }
       to   { opacity: 1; transform: none; }
     }
-    .idea-card { animation: riseIn 0.4s cubic-bezier(0.2, 0.65, 0.3, 1) both; }
+    .idea-section, .detail-wrap { animation: riseIn 0.45s cubic-bezier(0.2, 0.65, 0.3, 1) both; }
+
+    /* ---- Mobile: sidebar becomes a horizontal sticky bar ---- */
+    @media (max-width: 760px) {
+      .ideas-layout { grid-template-columns: 1fr; gap: 1.5rem; }
+      .ideas-nav {
+        position: static;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 1rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+      }
+      .ideas-nav a { white-space: nowrap; font-size: 0.85rem; }
+    }
 
     @media (prefers-reduced-motion: reduce) {
-      .chip { transition: none; }
-      .idea-card { animation: none; transition: none; }
+      .idea-section, .detail-wrap { animation: none; }
+      .idea-link, .ideas-nav a, .browse button, .back-link { transition: none; }
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
+  <main class="ideas-wrap">
     <a class="home-link" href="/">Henry Pan</a>
     <h1 class="title">Ideas</h1>
-
-    <div class="ideas-controls" id="filters" role="group" aria-label="Filter by category"></div>
-
-    <div class="ideas-grid" id="grid"></div>
+    <div id="view"></div>
   </main>
 
   <script>
+    var UNCATEGORIZED = 'Uncategorized';
+
+    function slugify(s) {
+      return (s || '').toLowerCase().trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
     fetch('/assets/data/ideas.json').then(function (r) { return r.json(); }).then(function (ideas) {
-      var grid = document.getElementById('grid');
-      var filtersEl = document.getElementById('filters');
+      var view = document.getElementById('view');
 
       if (!ideas.length) {
         var empty = document.createElement('p');
         empty.className = 'empty';
         empty.textContent = 'Nothing here yet.';
-        grid.appendChild(empty);
+        view.appendChild(empty);
         return;
       }
 
-      // collect unique tags in appearance order
-      var tags = [];
+      // assign slugs (dedupe collisions)
+      var seen = {};
       ideas.forEach(function (idea) {
-        var t = (idea.tag || '').trim();
-        if (t && tags.indexOf(t) === -1) tags.push(t);
+        var base = slugify(idea.title) || 'idea';
+        var slug = base, n = 2;
+        while (seen[slug]) { slug = base + '-' + n; n++; }
+        seen[slug] = true;
+        idea._slug = slug;
       });
 
-      // build filter chips
-      var current = 'all';
-      var allChip = makeChip('All', 'all', true);
-      filtersEl.appendChild(allChip);
-      tags.forEach(function (t) { filtersEl.appendChild(makeChip(t, t, false)); });
-
-      // build cards
-      ideas.forEach(function (idea, i) {
-        var card = document.createElement('div');
-        card.className = 'idea-card';
-        card.dataset.tag = (idea.tag || '').trim();
-        card.style.animationDelay = Math.min(i * 30, 480) + 'ms';
-
-        var title = document.createElement('p');
-        title.className = 'idea-title';
-        title.textContent = idea.title;
-        card.appendChild(title);
-
-        if (idea.body && idea.body.trim()) {
-          var body = document.createElement('p');
-          body.className = 'idea-body';
-          body.textContent = idea.body;
-          card.appendChild(body);
-        }
-
-        if (idea.tag) {
-          var tag = document.createElement('span');
-          tag.className = 'idea-tag';
-          tag.textContent = idea.tag;
-          card.appendChild(tag);
-        }
-
-        grid.appendChild(card);
+      // group by tag, first-appearance order, Uncategorized last
+      var order = [], groups = {};
+      ideas.forEach(function (idea) {
+        var tag = (idea.tag || '').trim() || UNCATEGORIZED;
+        if (!groups[tag]) { groups[tag] = []; order.push(tag); }
+        groups[tag].push(idea);
+      });
+      order.sort(function (a, b) {
+        if (a === UNCATEGORIZED) return 1;
+        if (b === UNCATEGORIZED) return -1;
+        return 0;
       });
 
-      function applyFilter() {
-        var cards = grid.querySelectorAll('.idea-card');
-        cards.forEach(function (card) {
-          var show = current === 'all' || card.dataset.tag === current;
-          card.classList.toggle('is-hidden', !show);
-        });
+      function findIdea(slug) {
+        for (var i = 0; i < ideas.length; i++) if (ideas[i]._slug === slug) return i;
+        return -1;
       }
 
-      function makeChip(label, value, active) {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'chip' + (active ? ' is-active' : '');
-        btn.textContent = label;
-        btn.dataset.filter = value;
-        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-        btn.addEventListener('click', function () {
-          current = value;
-          filtersEl.querySelectorAll('.chip').forEach(function (c) {
-            var on = c === btn;
-            c.classList.toggle('is-active', on);
-            c.setAttribute('aria-pressed', on ? 'true' : 'false');
+      function go(hash) { window.location.hash = hash; }
+
+      // ---------- LIST VIEW ----------
+      function renderList() {
+        view.innerHTML = '';
+
+        var layout = document.createElement('div');
+        layout.className = 'ideas-layout';
+
+        // sidebar
+        var nav = document.createElement('ul');
+        nav.className = 'ideas-nav';
+        var allLi = document.createElement('li');
+        var allA = document.createElement('a');
+        allA.textContent = 'All Ideas';
+        allA.className = 'is-active';
+        allA.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        allLi.appendChild(allA);
+        nav.appendChild(allLi);
+
+        // main
+        var mainCol = document.createElement('div');
+        mainCol.className = 'ideas-main';
+
+        var sectionEls = {};
+        order.forEach(function (tag, s) {
+          var tagSlug = slugify(tag);
+
+          var li = document.createElement('li');
+          var a = document.createElement('a');
+          a.textContent = tag;
+          a.dataset.tag = tagSlug;
+          a.addEventListener('click', function () {
+            var el = sectionEls[tag];
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           });
-          applyFilter();
+          li.appendChild(a);
+          nav.appendChild(li);
+
+          var section = document.createElement('section');
+          section.className = 'idea-section';
+          section.style.animationDelay = Math.min(s * 60, 360) + 'ms';
+          sectionEls[tag] = section;
+
+          var label = document.createElement('p');
+          label.className = 'section-label';
+          label.textContent = tag;
+          section.appendChild(label);
+
+          var ul = document.createElement('ul');
+          ul.className = 'idea-list';
+          groups[tag].forEach(function (idea) {
+            var ili = document.createElement('li');
+            var link = document.createElement('a');
+            link.className = 'idea-link';
+            link.textContent = idea.title;
+            link.href = '#' + idea._slug;
+            ili.appendChild(link);
+            ul.appendChild(ili);
+          });
+          section.appendChild(ul);
+          mainCol.appendChild(section);
         });
-        return btn;
+
+        layout.appendChild(nav);
+        layout.appendChild(mainCol);
+        view.appendChild(layout);
+
+        // scroll-spy: highlight the section currently in view
+        var navLinks = nav.querySelectorAll('a');
+        function setActive(tag) {
+          navLinks.forEach(function (a) {
+            a.classList.toggle('is-active', a.dataset.tag === tag || (tag === null && a.textContent === 'All Ideas'));
+          });
+        }
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                var t = e.target.querySelector('.section-label').textContent;
+                setActive(slugify(t));
+              }
+            });
+          }, { rootMargin: '-20% 0px -70% 0px' });
+          order.forEach(function (tag) { io.observe(sectionEls[tag]); });
+        }
       }
 
-      applyFilter();
+      // ---------- DETAIL VIEW ----------
+      function renderDetail(idx) {
+        view.innerHTML = '';
+        var idea = ideas[idx];
+
+        var wrap = document.createElement('div');
+        wrap.className = 'detail-wrap';
+
+        var card = document.createElement('div');
+        card.className = 'detail-card';
+
+        var body = document.createElement('div');
+        body.className = 'detail-body';
+        body.textContent = (idea.body && idea.body.trim()) ? idea.body : '—';
+        card.appendChild(body);
+
+        var footer = document.createElement('div');
+        footer.className = 'detail-footer';
+        var title = document.createElement('span');
+        title.className = 'detail-title';
+        title.textContent = idea.title;
+        footer.appendChild(title);
+        card.appendChild(footer);
+
+        wrap.appendChild(card);
+
+        // prev / next browse
+        var browse = document.createElement('div');
+        browse.className = 'browse';
+        var prev = document.createElement('button');
+        prev.type = 'button';
+        prev.textContent = '←';
+        prev.setAttribute('aria-label', 'Previous idea');
+        prev.disabled = idx === 0;
+        prev.addEventListener('click', function () { if (idx > 0) go(ideas[idx - 1]._slug); });
+        var next = document.createElement('button');
+        next.type = 'button';
+        next.textContent = '→';
+        next.setAttribute('aria-label', 'Next idea');
+        next.disabled = idx === ideas.length - 1;
+        next.addEventListener('click', function () { if (idx < ideas.length - 1) go(ideas[idx + 1]._slug); });
+        var label = document.createElement('span');
+        label.textContent = 'to browse';
+        browse.appendChild(prev);
+        browse.appendChild(next);
+        browse.appendChild(label);
+        wrap.appendChild(browse);
+
+        var back = document.createElement('a');
+        back.className = 'back-link';
+        back.textContent = 'All Ideas';
+        back.style.display = 'block';
+        back.addEventListener('click', function () { go(''); });
+        wrap.appendChild(back);
+
+        view.appendChild(wrap);
+        window.scrollTo(0, 0);
+      }
+
+      function route() {
+        var hash = window.location.hash.replace(/^#/, '');
+        var idx = hash ? findIdea(hash) : -1;
+        if (idx >= 0) renderDetail(idx);
+        else renderList();
+      }
+
+      window.addEventListener('hashchange', route);
+      route();
     }).catch(function () {});
   </script>
 </body>
