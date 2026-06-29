@@ -4,8 +4,9 @@
     {
       "name": "site",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["--yes", "serve", "-l", "4321", "/Users/henrypan/Desktop/henrybpan.github.io"],
-      "port": 4321
+      "runtimeArgs": ["--yes", "serve", "/Users/henrypan/Desktop/henrybpan.github.io"],
+      "port": 4321,
+      "autoPort": true
     }
   ]
 }

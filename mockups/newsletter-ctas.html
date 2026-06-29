@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newsletter CTA mockups</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+<style>
+  :root {
+    --font: 'Satoshi', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --paper: #ece8de;
+    --ink:   #1c1c1c;
+    --mut:   #6b6b6b;
+    --rule:  #cfc9bb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font);
+    padding: 3rem 1.5rem 6rem;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .meta { color: var(--mut); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; margin: 3.5rem 0 0.9rem; }
+  .meta.first { margin-top: 0; }
+  .variant { padding: 1.75rem 0; border-top: 1px solid var(--rule); }
+
+  /* current (for comparison) */
+  .current-form { display: flex; gap: 0.5rem; flex-wrap: wrap; max-width: 480px; }
+  .current-form input[type="email"] {
+    flex: 1 1 200px;
+    font-family: var(--font);
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--rule);
+    padding: 0.5rem 0.65rem;
+    min-width: 0;
+  }
+  .current-form button {
+    font-family: var(--font);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--paper);
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+  }
+
+  /* 1: underline-only field, text link submit */
+  .v1-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mut); margin-bottom: 0.6rem; }
+  .v1-blurb { font-size: 0.95rem; color: var(--mut); margin-bottom: 1rem; max-width: 28rem; }
+  .v1-form { display: flex; align-items: baseline; gap: 1.1rem; max-width: 460px; }
+  .v1-form input[type="email"] {
+    flex: 1 1 auto;
+    font-family: var(--font);
+    font-size: 1rem;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    padding: 0.35rem 0;
+    min-width: 0;
+    transition: border-color 0.15s ease;
+  }
+  .v1-form input[type="email"]::placeholder { color: var(--mut); }
+  .v1-form input[type="email"]:focus { outline: none; border-color: var(--ink); }
+  .v1-form button {
+    font-family: var(--font);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--ink);
+    padding: 0.35rem 0;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s ease;
+  }
+  .v1-form button:hover { opacity: 0.6; }
+
+  /* 2: single pill-less inline row, arrow submit */
+  .v2-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mut); margin-bottom: 0.6rem; }
+  .v2-blurb { font-size: 0.95rem; color: var(--mut); margin-bottom: 1rem; max-width: 28rem; }
+  .v2-form {
+    display: flex;
+    align-items: center;
+    max-width: 420px;
+    border-bottom: 1px solid var(--rule);
+    transition: border-color 0.15s ease;
+  }
+  .v2-form:focus-within { border-color: var(--ink); }
+  .v2-form input[type="email"] {
+    flex: 1 1 auto;
+    font-family: var(--font);
+    font-size: 1rem;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    padding: 0.5rem 0;
+    min-width: 0;
+  }
+  .v2-form input[type="email"]:focus { outline: none; }
+  .v2-form input[type="email"]::placeholder { color: var(--mut); }
+  .v2-form button {
+    font-family: var(--font);
+    background: none;
+    border: none;
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 0.4rem 0.1rem 0.4rem 0.6rem;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+  .v2-form button:hover { transform: translateX(3px); opacity: 0.7; }
+
+  /* 3: no field at all -- stacked, just a text link/CTA */
+  .v3-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mut); margin-bottom: 0.6rem; }
+  .v3-blurb { font-size: 0.95rem; color: var(--mut); margin-bottom: 0.9rem; max-width: 28rem; }
+  .v3-cta {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 0.1rem;
+    transition: opacity 0.15s ease;
+  }
+  .v3-cta:hover { opacity: 0.6; }
+  .v3-cta .arrow { transition: transform 0.15s ease; display: inline-block; }
+  .v3-cta:hover .arrow { transform: translateX(3px); }
+
+  h1 { font-size: 1.4rem; margin: 0 0 0.25rem; }
+  .sub { color: var(--mut); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Newsletter CTA — 3 options</h1>
+  <p class="sub">Current version shown first for comparison. All three drop the filled box + bordered input look.</p>
+
+  <p class="meta first">Current (boxy)</p>
+  <div class="variant">
+    <p class="v1-label" style="margin-bottom:0.35rem;">Newsletter</p>
+    <p class="v1-blurb" style="margin-bottom:0.85rem;">Notes from my life. <a href="#" style="color:var(--mut);text-decoration:underline;">More info →</a></p>
+    <form class="current-form">
+      <input type="email" placeholder="your@email.com">
+      <button type="button">Subscribe</button>
+    </form>
+  </div>
+
+  <p class="meta">Option 1 — underline field + underline button</p>
+  <div class="variant">
+    <p class="v1-label">Newsletter</p>
+    <p class="v1-blurb">Notes from my life. <a href="#" style="color:var(--mut);text-decoration:underline;">More info →</a></p>
+    <form class="v1-form">
+      <input type="email" placeholder="your@email.com">
+      <button type="button">Subscribe</button>
+    </form>
+  </div>
+
+  <p class="meta">Option 2 — single underlined row, arrow submit</p>
+  <div class="variant">
+    <p class="v2-label">Newsletter</p>
+    <p class="v2-blurb">Notes from my life. <a href="#" style="color:var(--mut);text-decoration:underline;">More info →</a></p>
+    <div class="v2-form">
+      <input type="email" placeholder="your@email.com">
+      <button type="button">→</button>
+    </div>
+  </div>
+
+  <p class="meta">Option 3 — no field on homepage, just a link to /newsletter</p>
+  <div class="variant">
+    <p class="v3-label">Newsletter</p>
+    <p class="v3-blurb">Notes from my life — occasional essays on faith, focus, and creative work.</p>
+    <a class="v3-cta" href="#">Subscribe <span class="arrow">→</span></a>
+  </div>
+</div>
+</body>
+</html>

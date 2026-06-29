@@ -1,7 +1,7 @@
 # Pages CMS config — https://pagescms.org
-# In-browser editing for Quotes / Ideas / Devotionals.
+# In-browser editing for Quotes / Ideas / Library.
 # Each file is a top-level JSON array (list: true); the /quotes, /ideas and
-# /devotionals pages fetch these same files and render them. Saving in the CMS
+# /library pages fetch these same files and render them. Saving in the CMS
 # commits to this repo, GitHub Pages redeploys, and the change goes live.
 
 content:
@@ -18,101 +18,6 @@ content:
       - name: author
         label: Author
         type: string
-
-  - name: devotionals
-    label: Devotionals
-    type: file
-    path: assets/data/devotionals.json
-    format: json
-    list: true
-    fields:
-      - name: date
-        label: Date
-        type: date
-      - name: book
-        label: Book
-        type: select
-        options:
-          values:
-            - Genesis
-            - Exodus
-            - Leviticus
-            - Numbers
-            - Deuteronomy
-            - Joshua
-            - Judges
-            - Ruth
-            - 1 Samuel
-            - 2 Samuel
-            - 1 Kings
-            - 2 Kings
-            - 1 Chronicles
-            - 2 Chronicles
-            - Ezra
-            - Nehemiah
-            - Esther
-            - Job
-            - Psalms
-            - Proverbs
-            - Ecclesiastes
-            - Song of Solomon
-            - Isaiah
-            - Jeremiah
-            - Lamentations
-            - Ezekiel
-            - Daniel
-            - Hosea
-            - Joel
-            - Amos
-            - Obadiah
-            - Jonah
-            - Micah
-            - Nahum
-            - Habakkuk
-            - Zephaniah
-            - Haggai
-            - Zechariah
-            - Malachi
-            - Matthew
-            - Mark
-            - Luke
-            - John
-            - Acts
-            - Romans
-            - 1 Corinthians
-            - 2 Corinthians
-            - Galatians
-            - Ephesians
-            - Philippians
-            - Colossians
-            - 1 Thessalonians
-            - 2 Thessalonians
-            - 1 Timothy
-            - 2 Timothy
-            - Titus
-            - Philemon
-            - Hebrews
-            - James
-            - 1 Peter
-            - 2 Peter
-            - 1 John
-            - 2 John
-            - 3 John
-            - Jude
-            - Revelation
-      - name: scope
-        label: Chapter / verse (e.g. 3:16, 1-3, or blank for the whole book)
-        type: string
-      - name: title
-        label: Title (optional)
-        type: string
-      - name: version
-        label: Bible version
-        type: string
-        default: ESV
-      - name: body
-        label: Devotional
-        type: text
 
   - name: library
     label: Library
