@@ -24,7 +24,7 @@
     "title": "A Little Life",
     "author": "Hanya Yanagihara",
     "medium": "Book",
-    "status": "Reading",
+    "status": "Read",
     "lindy": false
   },
   {
@@ -170,5 +170,13 @@
     "medium": "Essay",
     "lindy": false,
     "url": "https://medium.com/future-literacy/my-goal-alignment-problem-d90e0c14b717"
+  },
+  {
+    "title": "SITUATIONAL AWARENESS: The Decade Ahead",
+    "author": "Leopold Ashenbrenner",
+    "medium": "Essay",
+    "status": "To read",
+    "lindy": false,
+    "url": "https://situational-awareness.ai/"
   }
 ]
