@@ -121,6 +121,7 @@
     "title": "This is Water",
     "author": "David Foster Wallace",
     "medium": "Essay",
+    "status": "Read",
     "lindy": true
   },
   {
@@ -141,6 +142,7 @@
     "title": "The Laboratory and the Artist",
     "author": "Lucas Gelfond",
     "medium": "Essay",
+    "status": "To read",
     "lindy": false,
     "url": "https://clereviewofbooks.com/the-laboratory-and-the-artist/"
   },
