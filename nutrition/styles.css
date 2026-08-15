@@ -1,0 +1,10 @@
+:root { --tabbar-h: 56px; }
+.app { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); }
+.view { flex: 1; padding: 16px 16px calc(var(--tabbar-h) + 16px); max-width: 640px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+.tabbar { position: fixed; bottom: 0; left: 0; right: 0; height: var(--tabbar-h);
+  display: grid; grid-template-columns: repeat(4, 1fr); background: var(--bg-alt);
+  border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); }
+.tab { display: flex; align-items: center; justify-content: center; text-decoration: none;
+  color: var(--fg-mut); font: 500 13px system-ui, sans-serif; }
+.tab.is-active { color: var(--fg); }
+.num { font-variant-numeric: tabular-nums; font-family: system-ui, sans-serif; }
