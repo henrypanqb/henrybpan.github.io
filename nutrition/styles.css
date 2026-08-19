@@ -248,6 +248,22 @@ button[disabled] { opacity: .45; cursor: not-allowed; }
 
 /* ---------- plan detail ---------- */
 
+.title-row { display: flex; align-items: center; gap: 4px; }
+.title-row h1 { margin: 0; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+
+.rename-row { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; align-items: center; margin: 4px 0 14px; }
+.rename-row .field { font-size: 17px; font-weight: 600; }
+.rename-row .icon-btn { color: var(--fg); }
+.rename-row .icon-btn[aria-label='Cancel rename'] { color: var(--fg-mut); }
+
+.rename-day {
+  display: inline-flex; align-items: center; gap: 5px;
+  min-height: 36px; padding: 0 8px; margin: 0 0 10px -8px;
+  border: 0; background: none; color: var(--fg-mut);
+  font-size: 13px;
+}
+.rename-day:active { color: var(--fg); }
+
 .back { display: inline-flex; align-items: center; gap: 4px; min-height: 36px; margin-bottom: 4px; font-size: 14px; color: var(--fg-mut); text-decoration: none; }
 
 .day-tabs {

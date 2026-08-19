@@ -1,7 +1,7 @@
 const { ref, reactive, computed, h, onMounted } = Vue;
 import {
   loadPlan, addItem, updateItemServings, removeItem,
-  addPlanDay, addMeal, data, loadFoods,
+  addPlanDay, addMeal, renamePlan, renameDay, data, loadFoods,
 } from '../store.js';
 import { itemMacros, sumMacros, vsTarget } from '../calc.js';
 import { FoodPicker } from './food-picker.js';
@@ -73,6 +73,32 @@ export function PlanDetail(planId) {
       const bumpServings = (item, delta) =>
         setServings(item.id, Math.max(STEP, Math.round((Number(item.servings) + delta) * 100) / 100));
       const del = async (id) => { await removeItem(id); await refresh(); };
+
+      // Rename: one editor drives both the plan title and the active day tab.
+      const editing = ref(null); // 'plan' | 'day' | null
+      const draftName = ref('');
+      const saving = ref(false);
+
+      const startRenamePlan = () => { draftName.value = st.plan.name; editing.value = 'plan'; };
+      const startRenameDay = () => {
+        const d = st.days.find((x) => x.id === activeDay.value);
+        if (!d) return;
+        draftName.value = d.label;
+        editing.value = 'day';
+      };
+      const cancelRename = () => { editing.value = null; };
+      const commitRename = async () => {
+        const value = draftName.value.trim();
+        if (!value || saving.value) return;
+        saving.value = true;
+        const { error } = editing.value === 'plan'
+          ? await renamePlan(planId, value)
+          : await renameDay(activeDay.value, value);
+        saving.value = false;
+        if (error) return;
+        editing.value = null;
+        await refresh();
+      };
       const newDay = async () => {
         const { day } = await addPlanDay(planId, st.days.length + 1);
         await refresh();
@@ -96,12 +122,22 @@ export function PlanDetail(planId) {
         }
 
         const dayId = activeDay.value;
+        const activeLabel = st.days.find((d) => d.id === dayId)?.label;
         const cmp = vsTarget(dayTotal(dayId), target.value);
         const meals = mealsOfDay(dayId);
 
         return h('div', {}, [
           h('a', { class: 'back', href: '#/plans' }, [icon('back', 16), 'Plans']),
-          h('h1', st.plan.name),
+
+          editing.value === 'plan'
+            ? renameRow(draftName, commitRename, cancelRename, saving.value, 'Plan name')
+            : h('div', { class: 'title-row' }, [
+                h('h1', st.plan.name),
+                h('button', {
+                  class: 'icon-btn', 'aria-label': `Rename plan “${st.plan.name}”`,
+                  onClick: startRenamePlan,
+                }, icon('pencil', 18)),
+              ]),
 
           h('div', { class: 'day-tabs', role: 'tablist' }, [
             ...st.days.map((d) =>
@@ -114,6 +150,13 @@ export function PlanDetail(planId) {
             h('button', { class: 'day-tab is-add', 'aria-label': 'Add a day', onClick: newDay },
               [icon('plus', 14), 'Day']),
           ]),
+
+          editing.value === 'day'
+            ? renameRow(draftName, commitRename, cancelRename, saving.value, 'Day name')
+            : activeLabel
+              ? h('button', { class: 'rename-day', onClick: startRenameDay },
+                  [icon('pencil', 13), `Rename ${activeLabel}`])
+              : null,
 
           h('div', { class: 'targets' }, KEYS.map(({ k, label }) =>
             h('div', { class: ['target-row', k], key: k }, [
@@ -184,4 +227,27 @@ export function PlanDetail(planId) {
       };
     },
   };
+}
+
+// Inline rename editor shared by the plan title and the day tab.
+// Enter commits, Escape cancels, and the field takes focus on mount.
+function renameRow(model, onSave, onCancel, saving, label) {
+  return h('div', { class: 'rename-row' }, [
+    h('input', {
+      class: 'field', value: model.value, 'aria-label': label,
+      enterkeyhint: 'done', maxlength: '60',
+      onVnodeMounted: (vn) => { vn.el.focus(); vn.el.select(); },
+      onInput: (e) => (model.value = e.target.value),
+      onKeydown: (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); onSave(); }
+        if (e.key === 'Escape') { e.preventDefault(); onCancel(); }
+      },
+    }),
+    h('button', {
+      class: 'icon-btn', 'aria-label': 'Save name',
+      disabled: saving || !model.value.trim(), onClick: onSave,
+    }, icon('check', 20)),
+    h('button', { class: 'icon-btn', 'aria-label': 'Cancel rename', onClick: onCancel },
+      icon('close', 20)),
+  ]);
 }

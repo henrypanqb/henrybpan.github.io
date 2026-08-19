@@ -100,6 +100,22 @@ export async function createPlan(name) {
   return { plan };
 }
 
+export async function renamePlan(id, name) {
+  const { data: row, error } = await supabase
+    .from('plans').update({ name }).eq('id', id).select().single();
+  if (!fail(error, 'Renaming plan')) {
+    data.plans = data.plans.map((p) => (p.id === id ? row : p));
+  }
+  return { row, error };
+}
+
+export async function renameDay(id, label) {
+  const { data: row, error } = await supabase
+    .from('plan_days').update({ label }).eq('id', id).select().single();
+  fail(error, 'Renaming day');
+  return { row, error };
+}
+
 export async function addPlanDay(planId, dayIndex) {
   const { data: day, error } = await supabase.from('plan_days')
     .insert({ plan_id: planId, day_index: dayIndex, label: 'Day ' + dayIndex })
