@@ -1,29 +1,31 @@
 const { reactive, ref, h } = Vue;
 import { getTargets, setTargets, signOut, state } from '../store.js';
+import { icon } from '../icons.js';
 
-const KEYS = ['calories', 'protein', 'fat', 'carb'];
+const KEYS = [
+  { k: 'calories', label: 'Calories' },
+  { k: 'protein', label: 'Protein (g)' },
+  { k: 'fat', label: 'Fat (g)' },
+  { k: 'carb', label: 'Carbs (g)' },
+];
 
 export const Settings = {
   setup() {
     const t = reactive(getTargets());
     const saved = ref(false);
+    let timer = null;
 
     const save = () => {
       setTargets({ ...t });
       saved.value = true;
-      setTimeout(() => (saved.value = false), 1500);
+      clearTimeout(timer);
+      timer = setTimeout(() => (saved.value = false), 1800);
     };
 
-    const toggleTheme = () => {
-      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-      document.documentElement.dataset.theme = next;
-      localStorage.setItem('theme', next);
-    };
-
-    const field = (k) => h('label', { class: 'set-row', key: k }, [
-      h('span', k),
+    const field = ({ k, label }) => h('label', { class: 'set-row', key: k }, [
+      h('span', label),
       h('input', {
-        type: 'number', min: '0', inputmode: 'decimal', value: t[k],
+        class: 'field', type: 'number', min: '0', inputmode: 'decimal', value: t[k],
         onInput: (e) => (t[k] = Number(e.target.value)),
         onChange: save,
       }),
@@ -31,15 +33,22 @@ export const Settings = {
 
     return () => h('div', {}, [
       h('h1', 'Settings'),
+
       h('h2', { class: 'cat' }, 'Default daily targets'),
-      h('p', { class: 'hint' }, 'Applied to plans you create from now on.'),
+      h('p', { class: 'hint' }, 'Applied to plans you create from now on. Existing plans keep their own targets.'),
       ...KEYS.map(field),
-      saved.value ? h('p', { class: 'hint' }, 'Saved.') : null,
+      h('p', {
+        class: 'hint',
+        style: { color: saved.value ? 'var(--c-met)' : 'transparent' },
+        'aria-live': 'polite',
+      }, saved.value ? 'Saved' : ' '),
+
       h('h2', { class: 'cat' }, 'App'),
-      h('button', { class: 'add-btn', onClick: toggleTheme }, 'Toggle theme'),
-      h('button', { class: 'add-btn', onClick: () => signOut() }, 'Sign out'),
+      h('div', { class: 'btn-row' }, [
+        h('button', { class: 'btn btn-danger', onClick: () => signOut() }, [icon('logout', 18), 'Sign out']),
+      ]),
       state.session?.user?.email
-        ? h('p', { class: 'hint' }, `Signed in as ${state.session.user.email}`)
+        ? h('p', { class: 'hint', style: { marginTop: '12px' } }, `Signed in as ${state.session.user.email}`)
         : null,
     ]);
   },

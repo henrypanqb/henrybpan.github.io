@@ -1,4 +1,4 @@
-# Nutrition Tracker ("FiveCode") — Design Spec
+# Nutrition Tracker — Design Spec
 
 **Date:** 2026-08-13
 **Status:** Approved design, pre-implementation

@@ -13,10 +13,12 @@ test('adding an item to a plan updates the meal total', async ({ page }) => {
   await page.getByRole('button', { name: 'Create' }).click();
   await page.getByRole('link', { name: planName }).click();
 
-  await page.getByRole('button', { name: '+ add' }).first().click();
-  await page.getByPlaceholder('Search food').fill('Greek');
+  await page.getByRole('button', { name: /Add to Meal 1/ }).click();
+  await page.getByPlaceholder('Search food').fill('Total Full Fat Greek');
   await page.locator('.pick-list li').first().click();
-  await page.getByRole('button', { name: 'Add', exact: true }).click();
+  await page.locator('.confirm-bar').getByRole('button', { name: 'Add' }).click();
 
-  await expect(page.locator('.meal-head .num').first()).not.toContainText('0 cal');
+  // 1 serving of Total Full Fat Greek Yoghurt = 202 cal
+  await expect(page.locator('.meal-cal').first()).toHaveText('202 cal');
+  await expect(page.locator('.target-row.calories .target-v')).toContainText('202 / 3150');
 });

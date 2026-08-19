@@ -1,7 +1,13 @@
 const { computed, ref, h, onMounted } = Vue;
 import { data, loadFoods, addFood, updateFood } from '../store.js';
+import { icon } from '../icons.js';
+import { macroChips } from './macro-chips.js';
 
-const CATS = ['protein', 'fat', 'carb'];
+const CATS = [
+  { key: 'protein', label: 'Protein' },
+  { key: 'fat', label: 'Fat' },
+  { key: 'carb', label: 'Carbs' },
+];
 const BLANK = { name: '', category: 'protein', serving_label: '', calories: 0, protein: 0, fat: 0, carb: 0 };
 
 export const Library = {
@@ -10,21 +16,31 @@ export const Library = {
     const draft = ref(null);
     const editingId = ref(null);
     const saving = ref(false);
+    const loading = ref(true);
 
-    onMounted(() => { if (!data.foods.length) loadFoods(); });
+    onMounted(async () => {
+      if (!data.foods.length) await loadFoods();
+      loading.value = false;
+    });
 
     const filtered = computed(() => {
       const term = q.value.trim().toLowerCase();
-      return CATS.map((cat) => ({
-        cat,
+      return CATS.map((c) => ({
+        ...c,
         items: data.foods.filter(
-          (f) => f.category === cat && f.name.toLowerCase().includes(term)
+          (f) => f.category === c.key && f.name.toLowerCase().includes(term)
         ),
-      })).filter((g) => g.items.length || !term);
+      }));
     });
 
+    const totalShown = computed(() => filtered.value.reduce((n, g) => n + g.items.length, 0));
+
     const startAdd = () => { editingId.value = null; draft.value = { ...BLANK }; };
-    const startEdit = (food) => { editingId.value = food.id; draft.value = { ...food }; };
+    const startEdit = (food) => {
+      editingId.value = food.id;
+      draft.value = { ...food };
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     const cancel = () => { draft.value = null; editingId.value = null; };
 
     const save = async () => {
@@ -43,56 +59,93 @@ export const Library = {
       if (!error) cancel();
     };
 
-    return () => h('div', {}, [
-      h('h1', 'Library'),
-      h('input', {
-        class: 'search', type: 'search', placeholder: 'Search foods',
-        value: q.value, onInput: (e) => (q.value = e.target.value),
-      }),
-      draft.value
-        ? foodForm(draft, save, cancel, saving.value, !!editingId.value)
-        : h('button', { class: 'add-btn', onClick: startAdd }, '+ Add food'),
-      ...filtered.value.map((group) =>
-        h('section', { key: group.cat }, [
-          h('h2', { class: 'cat' }, group.cat),
-          h('ul', { class: 'food-list' }, group.items.map((f) =>
-            h('li', { key: f.id, onClick: () => startEdit(f) }, [
-              h('span', { class: 'food-name' }, `${f.name} · ${f.serving_label}`),
-              h('span', { class: 'num' },
-                `${f.calories} cal · P${f.protein} F${f.fat} C${f.carb}`),
+    return () => {
+      if (loading.value) {
+        return h('div', {}, [
+          h('h1', 'Library'),
+          h('div', { class: 'skel' }, [1, 2, 3, 4, 5, 6].map((n) => h('div', { class: 'skel-row', key: n }))),
+        ]);
+      }
+
+      return h('div', {}, [
+        h('h1', 'Library'),
+        h('div', { class: 'searchbar' }, [
+          icon('search', 18),
+          h('input', {
+            class: 'field', type: 'search', placeholder: 'Search foods',
+            'aria-label': 'Search foods', enterkeyhint: 'search',
+            value: q.value, onInput: (e) => (q.value = e.target.value),
+          }),
+        ]),
+        draft.value
+          ? foodForm(draft, save, cancel, saving.value, !!editingId.value)
+          : h('button', { class: 'btn btn-block', onClick: startAdd }, [icon('plus', 18), 'Add food']),
+
+        q.value.trim() && totalShown.value === 0
+          ? h('div', { class: 'empty' }, [
+              h('strong', `No food matches “${q.value.trim()}”`),
+              'Try a shorter search, or add it as a custom food.',
             ])
-          )),
-        ])
-      ),
-    ]);
+          : null,
+
+        ...filtered.value
+          .filter((g) => g.items.length)
+          .map((group) =>
+            h('section', { key: group.key }, [
+              h('h2', { class: 'cat' }, [group.label, h('span', { class: 'cat-n' }, group.items.length)]),
+              h('ul', { class: 'food-list' }, group.items.map((f) =>
+                h('li', {
+                  key: f.id, tabindex: '0', role: 'button',
+                  'aria-label': `Edit ${f.name}`,
+                  onClick: () => startEdit(f),
+                  onKeydown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startEdit(f); } },
+                }, [
+                  h('div', {}, [
+                    h('div', { class: 'food-name' }, f.name),
+                    h('div', { class: 'food-serving' }, f.serving_label),
+                  ]),
+                  h('div', { class: 'food-cal' }, `${f.calories} cal`),
+                  macroChips(f),
+                ])
+              )),
+            ])
+          ),
+      ]);
+    };
   },
 };
 
 function foodForm(draft, save, cancel, saving, isEdit) {
-  const field = (k, type, label) => h('label', { class: 'set-row' }, [
+  const field = (k, type, label, extra = {}) => h('label', { class: 'set-row' }, [
     h('span', label),
     h('input', {
-      type, value: draft.value[k], inputmode: type === 'number' ? 'decimal' : undefined,
+      class: 'field', type,
+      inputmode: type === 'number' ? 'decimal' : undefined,
+      value: draft.value[k],
       onInput: (e) => (draft.value[k] = type === 'number' ? Number(e.target.value) : e.target.value),
+      ...extra,
     }),
   ]);
+
   return h('div', { class: 'food-form' }, [
-    field('name', 'text', 'name'),
+    h('h2', isEdit ? 'Edit food' : 'New food'),
+    field('name', 'text', 'Name'),
     h('label', { class: 'set-row' }, [
-      h('span', 'category'),
+      h('span', 'Category'),
       h('select', {
+        class: 'field',
         value: draft.value.category,
         onChange: (e) => (draft.value.category = e.target.value),
-      }, ['protein', 'fat', 'carb'].map((c) => h('option', { value: c, key: c }, c))),
+      }, CATS.map((c) => h('option', { value: c.key, key: c.key }, c.label))),
     ]),
-    field('serving_label', 'text', 'serving'),
-    field('calories', 'number', 'calories'),
-    field('protein', 'number', 'protein'),
-    field('fat', 'number', 'fat'),
-    field('carb', 'number', 'carb'),
-    h('div', { class: 'form-actions' }, [
-      h('button', { class: 'add-btn', onClick: cancel }, 'Cancel'),
-      h('button', { class: 'primary-btn', disabled: saving, onClick: save },
+    field('serving_label', 'text', 'Serving', { placeholder: 'e.g. 200g, 2 eggs' }),
+    field('calories', 'number', 'Calories'),
+    field('protein', 'number', 'Protein (g)'),
+    field('fat', 'number', 'Fat (g)'),
+    field('carb', 'number', 'Carbs (g)'),
+    h('div', { class: 'btn-row' }, [
+      h('button', { class: 'btn', onClick: cancel }, 'Cancel'),
+      h('button', { class: 'btn btn-primary', disabled: saving, onClick: save },
         saving ? 'Saving…' : isEdit ? 'Save changes' : 'Add food'),
     ]),
   ]);

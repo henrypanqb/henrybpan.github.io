@@ -175,7 +175,7 @@ export async function removeItem(id) {
 
 // --- default targets (local to the device for Phase 1) --------------------
 
-const TKEY = 'fivecode.targets';
+const TKEY = 'nutrition.targets';
 const DEFAULT_TARGETS = { calories: 3150, protein: 135, fat: 105, carb: 306 };
 
 export function getTargets() {
