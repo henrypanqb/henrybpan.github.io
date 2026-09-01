@@ -13,212 +13,303 @@
   <link rel="canonical" href="https://henrybpan.com/">
   <title>Henry Pan</title>
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://img.youtube.com" crossorigin>
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
   <link rel="stylesheet" href="/assets/minimal.css?v=1">
   <style>
-    /* Centered column, left-aligned text (sonith.org style) */
-    main.home {
-      margin: 0 auto;
-      max-width: 640px;
-      text-align: left;
-      padding-top: clamp(3.5rem, 10vh, 6rem);
-      padding-left: clamp(1.25rem, 5vw, 2rem);
-      padding-right: clamp(1.25rem, 5vw, 2rem);
-    }
+    /* ==========================================================
+       LINK PAGE — mobile-first, centered single column.
+       No cards, no bubbles: links are plain text on their own
+       lines, separated by whitespace only.
+    ========================================================== */
+    body { text-align: center; }
 
-    .hero-tagline {
-      color: var(--ink);
-      font-size: clamp(0.98rem, 1.58vw, 1.13rem);
-      line-height: 1.5;
+    main.linkpage {
       max-width: 30rem;
-      margin: 0.9rem 0 1.8rem;
+      margin: 0 auto;
+      padding: clamp(2.5rem, 8vh, 4rem) 1.5rem clamp(3rem, 10vh, 4.5rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    /* Two stacked rows of links, no hamburger */
-    .linkrow { display: flex; flex-wrap: wrap; list-style: none; }
-    .linkrow a {
+    /* ---- Name ---- */
+    .name {
+      font-size: clamp(1.6rem, 7vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    /* ---- Social icon row ---- */
+    .socials {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 1.35rem;
+      margin: 0.95rem 0 0;
+      padding: 0;
+    }
+    .socials a {
+      display: block;
+      color: var(--mut);
+      padding: 0.35rem;
+      margin: -0.35rem;           /* keeps the 44px tap target without spacing drift */
+      transition: color 0.15s ease, transform 0.15s ease;
+    }
+    .socials a:hover,
+    .socials a:focus-visible { color: var(--ink); transform: translateY(-1px); }
+    .socials svg { width: 19px; height: 19px; display: block; fill: currentColor; }
+
+    /* ---- Latest video ---- */
+    .video {
+      display: block;
+      width: 100%;
+      margin: clamp(2rem, 6vh, 2.75rem) 0 0;
       color: var(--ink);
       text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.15s ease;
     }
-    .linkrow a:hover { border-color: var(--ink); }
-    .linkrow.primary { gap: 1.2rem; }
-    .linkrow.primary a { font-size: clamp(1.05rem, 1.6vw, 1.2rem); }
-    .linkrow.secondary { gap: 0.95rem; margin-top: 0.7rem; }
-    .linkrow.secondary a { font-size: clamp(0.95rem, 1.4vw, 1.05rem); color: var(--mut); }
-    .linkrow.secondary a:hover { color: var(--ink); border-color: var(--ink); }
-
-    .newsletter-block {
-      margin-top: 2.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--rule);
-      max-width: 480px;
-    }
-    .newsletter-label {
+    .video-kicker {
+      display: block;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--mut);
-      margin-bottom: 0.35rem;
-    }
-    .newsletter-blurb {
-      font-size: clamp(0.9rem, 1.3vw, 0.98rem);
-      color: var(--mut);
       margin-bottom: 0.85rem;
     }
-    .newsletter-blurb a {
-      color: var(--mut);
-      text-decoration: underline;
-      text-underline-offset: 2px;
+    .video-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #d9d4c6;
     }
-    .newsletter-blurb a:hover { color: var(--ink); }
-    .newsletter-form {
-      display: flex;
-      align-items: center;
-      max-width: 420px;
-      border-bottom: 1px solid var(--rule);
-      transition: border-color 0.15s ease;
+    .video-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.25s ease;
     }
-    .newsletter-form:focus-within { border-color: var(--ink); }
-    .newsletter-form input[type="email"] {
-      flex: 1 1 auto;
-      font-family: var(--font);
+    .video-thumb img.is-loaded { opacity: 1; }
+    .video:hover .video-thumb img { transform: scale(1.02); }
+
+    /* Play glyph — a hairline circle, no filled YouTube chrome */
+    .video-play {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
+    .video-play span {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.9);
+      background: rgba(28,28,28,0.28);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      display: grid;
+      place-items: center;
+    }
+    .video-play svg { width: 15px; height: 15px; fill: #fff; margin-left: 2px; }
+
+    .video-title {
+      display: block;
+      margin-top: 0.8rem;
       font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--ink);
+      max-width: 26rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .video:hover .video-title { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ---- Link stack: line breaks only, no boxes ---- */
+    .links {
+      list-style: none;
+      margin: clamp(1.6rem, 4.5vh, 2.25rem) 0 0;
+      padding: 0;
+      width: 100%;
+    }
+    .links li { margin: 0; }
+    .links a {
+      display: block;
+      padding: 0.6rem 0;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 1.075rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.15s ease, opacity 0.15s ease;
+    }
+    .links a:hover,
+    .links a:focus-visible { color: var(--mut); }
+
+    /* ---- Discord CTA ---- */
+    .discord {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      margin: clamp(2rem, 5.5vh, 2.75rem) auto 0;
+      padding: 0.7rem 1.4rem;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
       color: var(--ink);
       background: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0.5rem 0;
-      min-width: 0;
+      text-decoration: none;
+      font-size: 0.98rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
-    .newsletter-form input[type="email"]:focus { outline: none; }
-    .newsletter-form button {
-      font-family: var(--font);
-      background: none;
-      border: none;
-      color: var(--ink);
-      cursor: pointer;
-      font-size: 1.15rem;
-      line-height: 1;
-      padding: 0.4rem 0.1rem 0.4rem 0.6rem;
-      white-space: nowrap;
-      transition: transform 0.15s ease, opacity 0.15s ease;
+    .discord svg { width: 18px; height: 18px; fill: currentColor; display: block; }
+    .discord:hover,
+    .discord:focus-visible { background: var(--ink); color: var(--paper); }
+
+    /* ---- Desktop / large screens ---- */
+    @media (min-width: 760px) {
+      main.linkpage { max-width: 34rem; padding-top: clamp(4rem, 12vh, 6rem); }
+      .name { font-size: 2.25rem; }
+      .socials { gap: 1.5rem; }
+      .socials svg { width: 20px; height: 20px; }
+      .links a { font-size: 1.15rem; padding: 0.65rem 0; }
+      .video-title { font-size: 1rem; }
+      .discord { font-size: 1.02rem; padding: 0.75rem 1.6rem; }
     }
-    .newsletter-form button:hover:not(:disabled) { transform: translateX(3px); opacity: 0.7; }
-    .newsletter-form button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .newsletter-status { margin-top: 0.55rem; font-size: 0.85rem; color: var(--mut); min-height: 1.1em; }
-    .newsletter-status.ok { color: #3f6f4a; }
-    .newsletter-status.err { color: #a8443a; }
 
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   </style>
 </head>
 <body>
-  <main class="wrap home">
-    <h1 class="title">Henry Pan</h1>
-    <p class="hero-tagline">work at everything with all your heart, as working for the Lord and not human masters.</p>
+  <main class="linkpage">
+    <h1 class="name">Henry Pan</h1>
 
-    <ul class="linkrow primary">
-      <li><a href="https://www.instagram.com/henrybpan" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-      <li><a id="yt-link" href="https://www.youtube.com/@henrybpan" target="_blank" rel="noopener noreferrer">YouTube</a></li>
-      <li><a href="/writings/">Essays</a></li>
+    <ul class="socials">
+      <li>
+        <a href="https://www.instagram.com/henrybpan" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.71-2.13 1.38C1.34 2.68.93 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.71 1.46 1.38 2.13.67.67 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.71 2.13-1.38.67-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.71-1.46-1.38-2.13C21.32 1.34 20.65.93 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0z"/><path d="M12 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.16A4 4 0 1 1 16 12a4 4 0 0 1-4 4z"/><circle cx="18.41" cy="5.59" r="1.44"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/@henrybpan" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81zM9.55 15.57V8.43L15.82 12z"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.tiktok.com/@henrybpan" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.74a8.16 8.16 0 0 0 4.77 1.52V6.83a4.85 4.85 0 0 1-1.84-.14z"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.linkedin.com/in/henrybpan/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.063 2.063 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://x.com/henrypanonx" target="_blank" rel="noopener noreferrer" aria-label="X">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </li>
     </ul>
-    <ul class="linkrow secondary">
+
+    <a class="video" id="latest-video" href="https://www.youtube.com/@henrybpan" target="_blank" rel="noopener noreferrer">
+      <span class="video-kicker">Watch my latest youtube video</span>
+      <span class="video-thumb">
+        <img id="latest-video-thumb" src="" alt="">
+        <span class="video-play">
+          <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+        </span>
+      </span>
+      <span class="video-title" id="latest-video-title"></span>
+    </a>
+
+    <ul class="links">
       <li><a href="/about/">About</a></li>
       <li><a href="/now/">Now</a></li>
-      <li><a href="/library/">Library</a></li>
-      <li><a href="/ideas/">Ideas</a></li>
-      <li><a href="/quotes/">Quotes</a></li>
+      <li><a href="https://myfavoriteapp.com/henry" target="_blank" rel="noopener noreferrer">Favorites</a></li>
       <li><a href="/contact/">Contact</a></li>
+      <li><a href="https://calendly.com/henrypaninquiries/creative-strategy-1-1" target="_blank" rel="noopener noreferrer">Content Consulting</a></li>
     </ul>
 
-    <div class="newsletter-block">
-      <p class="newsletter-label">Join my Newsletter!</p>
-      <p class="newsletter-blurb">Just little notes from my life. <a href="/newsletter/">More info →</a></p>
-      <form class="newsletter-form" id="home-signup" action="https://formspree.io/f/xaqgyvae" method="POST">
-        <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" aria-label="Email address">
-        <button type="submit" aria-label="Subscribe">→</button>
-      </form>
-      <p class="newsletter-status" id="home-status" role="status" aria-live="polite"></p>
-    </div>
+    <a class="discord" href="https://discord.gg/yfbmyw4hBG" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      <span>Join my Discord</span>
+    </a>
   </main>
 
   <script>
+    // ---- Latest YouTube video: thumbnail, title, and app deep link ----
     (function () {
-      var form   = document.getElementById('home-signup');
-      var status = document.getElementById('home-status');
-      var btn    = form.querySelector('button');
-
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        var email = form.querySelector('input[type="email"]').value.trim();
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          status.className = 'newsletter-status err';
-          status.textContent = 'Please enter a valid email address.';
-          return;
-        }
-        btn.disabled = true;
-        status.className = 'newsletter-status';
-        status.textContent = 'Subscribing…';
-        try {
-          var res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
-          if (res.ok) {
-            form.reset();
-            btn.disabled = false;
-            status.className = 'newsletter-status ok';
-            status.textContent = 'You\'re on the list. Talk soon.';
-          } else {
-            var data = await res.json().catch(function () { return {}; });
-            btn.disabled = false;
-            status.className = 'newsletter-status err';
-            status.textContent = (data && data.error) || 'Something went wrong. Try again.';
-          }
-        } catch (err) {
-          btn.disabled = false;
-          status.className = 'newsletter-status err';
-          status.textContent = 'Network error. Try again.';
-        }
-      });
-    }());
-  </script>
-
-  <script>
-    // In Instagram/Facebook in-app browsers, a normal youtube.com link opens
-    // inside their webview instead of the YouTube app. Best-effort: when we
-    // detect an in-app browser, try the native app via deep link, falling back
-    // to the regular link. Desktop and normal mobile browsers are untouched.
-    (function () {
-      var link = document.getElementById('yt-link');
+      var link  = document.getElementById('latest-video');
+      var img   = document.getElementById('latest-video-thumb');
+      var title = document.getElementById('latest-video-title');
       if (!link) return;
-      var ua = navigator.userAgent || '';
-      var inApp = /Instagram|FBAN|FBAV|FB_IAB|Line\/|Snapchat|Twitter|TikTok|musical_ly/i.test(ua);
-      if (!inApp) return; // universal links already open the app in normal browsers
-      var isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+      var ua        = navigator.userAgent || '';
+      var isIOS     = /iPhone|iPad|iPod/i.test(ua);
       var isAndroid = /Android/i.test(ua);
-      var CHANNEL = 'UCjUMsx6Vqgy9x0MWWzQ7FlA';
-      var web = link.href; // https://www.youtube.com/@henrybpan
-      link.addEventListener('click', function (e) {
-        if (isAndroid) {
-          e.preventDefault();
-          window.location.href =
-            'intent://www.youtube.com/channel/' + CHANNEL +
-            '#Intent;package=com.google.android.youtube;scheme=https;' +
-            'S.browser_fallback_url=' + encodeURIComponent(web) + ';end';
-        } else if (isIOS) {
-          e.preventDefault();
-          var fallback = setTimeout(function () { window.location.href = web; }, 1200);
-          var cancel = function () { clearTimeout(fallback); };
-          window.addEventListener('pagehide', cancel, { once: true });
-          document.addEventListener('visibilitychange', function () {
-            if (document.hidden) cancel();
-          }, { once: true });
-          window.location.href = 'youtube://www.youtube.com/channel/' + CHANNEL;
-        }
-      });
+
+      function setThumb(id) {
+        img.onerror = function () {
+          img.onerror = null;
+          img.src = 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg';
+        };
+        img.onload = function () { img.classList.add('is-loaded'); };
+        img.src = 'https://img.youtube.com/vi/' + id + '/maxresdefault.jpg';
+      }
+
+      // On phones, hand the tap to the YouTube app; fall back to the web URL
+      // if the app isn't installed (or the scheme is blocked).
+      function wireDeepLink(id) {
+        var web = 'https://www.youtube.com/watch?v=' + id;
+        link.href = web;
+        if (!isIOS && !isAndroid) return;
+        link.addEventListener('click', function (e) {
+          if (isAndroid) {
+            e.preventDefault();
+            window.location.href =
+              'intent://www.youtube.com/watch?v=' + id +
+              '#Intent;package=com.google.android.youtube;scheme=https;' +
+              'S.browser_fallback_url=' + encodeURIComponent(web) + ';end';
+          } else {
+            e.preventDefault();
+            var fallback = setTimeout(function () { window.location.href = web; }, 1200);
+            var cancel = function () { clearTimeout(fallback); };
+            window.addEventListener('pagehide', cancel, { once: true });
+            document.addEventListener('visibilitychange', function () {
+              if (document.hidden) cancel();
+            }, { once: true });
+            window.location.href = 'youtube://www.youtube.com/watch?v=' + id;
+          }
+        });
+      }
+
+      fetch('/assets/data/dates.json', { cache: 'no-cache' })
+        .then(function (r) { if (!r.ok) throw new Error('dates.json ' + r.status); return r.json(); })
+        .then(function (data) {
+          var v = data && data.latestVideo;
+          if (!v || !v.id) throw new Error('no latest video');
+          setThumb(v.id);
+          img.alt = v.title || 'Latest video';
+          title.textContent = v.title || '';
+          wireDeepLink(v.id);
+        })
+        .catch(function () {
+          // No data: keep the channel link, drop the empty thumbnail frame.
+          var frame = link.querySelector('.video-thumb');
+          if (frame) frame.remove();
+          title.textContent = '';
+        });
     }());
   </script>
+
 </body>
 </html>
